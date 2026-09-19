@@ -1,0 +1,3111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Кибербезопасность">
+<meta name="theme-color" content="#0a0c10">
+<meta name="format-detection" content="telephone=no,address=no,email=no,date=no">
+<title>Кибербезопасность · 228 слайдов</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;position:fixed;width:100%}
+body{
+  background:#0a0c10;color:#e8e5dd;
+  font-family:-apple-system,'SF Pro Text','Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:'ss01','cv11';
+}
+:root{
+  --fg:#e8e5dd;--fg-2:#b8b3a8;--muted:#7a756a;
+  --line:rgba(232,229,221,.09);--line-strong:rgba(232,229,221,.16);
+  --accent:#c9a45c;--accent-2:#8b6d3f;
+  --danger:#b85450;--warn:#cc8b3f;
+  --sat:env(safe-area-inset-top);
+  --sab:env(safe-area-inset-bottom);
+}
+
+#deck{
+  position:fixed;inset:0;
+  height:100vh;height:100dvh;
+  width:100vw;
+  overflow:hidden;
+}
+
+/* ============ СЛАЙД ============ */
+.slide{
+  position:absolute;inset:0;
+  padding:
+    calc(52px + var(--sat))
+    18px
+    calc(86px + var(--sab));
+  display:flex;
+  flex-direction:column;
+  opacity:0;visibility:hidden;
+  transform:translateY(14px);
+  transition:opacity .42s cubic-bezier(.2,.7,.2,1),transform .42s cubic-bezier(.2,.7,.2,1);
+  overflow:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.slide.active{
+  opacity:1;visibility:visible;transform:none;z-index:2;
+}
+
+/* Мягкая тёплая подсветка фона */
+.slide::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(120% 90% at 10% 0%, rgba(201,164,92,.10), transparent 55%),
+    radial-gradient(100% 80% at 100% 100%, rgba(139,109,63,.08), transparent 55%);
+}
+
+.s-inner{
+  position:relative;z-index:3;
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding-right:4px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(201,164,92,.35) transparent;
+}
+.s-inner::-webkit-scrollbar{width:3px}
+.s-inner::-webkit-scrollbar-track{background:transparent}
+.s-inner::-webkit-scrollbar-thumb{background:rgba(201,164,92,.4);border-radius:3px}
+
+/* Появление внутренних элементов с задержкой */
+.slide.active .s-inner > *{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+.slide.active .s-inner > *:nth-child(1){animation-delay:.03s}
+.slide.active .s-inner > *:nth-child(2){animation-delay:.09s}
+.slide.active .s-inner > *:nth-child(3){animation-delay:.15s}
+.slide.active .s-inner > *:nth-child(4){animation-delay:.21s}
+.slide.active .s-inner > *:nth-child(5){animation-delay:.27s}
+.slide.active .s-inner > *:nth-child(6){animation-delay:.33s}
+.slide.active .s-inner > *:nth-child(7){animation-delay:.39s}
+.slide.active .s-inner > *:nth-child(8){animation-delay:.45s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ============ ТИПОГРАФИКА ============ */
+.kicker{
+  display:inline-block;
+  font-size:.62rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:.7rem;font-weight:700;
+}
+h1{
+  font-size:clamp(2rem,10vw,2.9rem);
+  line-height:1.06;font-weight:800;letter-spacing:-.03em;
+  color:#f2efe7;
+}
+h2{
+  font-size:clamp(1.35rem,6.4vw,1.8rem);
+  line-height:1.18;font-weight:750;letter-spacing:-.022em;
+  margin-bottom:.85rem;color:#f2efe7;
+}
+h3{
+  font-size:1rem;font-weight:650;
+  color:#f2efe7;margin-bottom:.4rem;letter-spacing:-.008em;
+}
+.lead{
+  font-size:1rem;line-height:1.6;
+  color:#c2bdb1;margin-bottom:1.1rem;
+}
+p{color:var(--fg-2);line-height:1.62;font-size:.94rem}
+.grad{
+  background:linear-gradient(120deg,var(--accent) 0%,#e0be7c 55%,var(--accent-2) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* ============ СЕТКИ (в одну колонку) ============ */
+.grid,.g2,.g3,.g4{display:grid;grid-template-columns:1fr;gap:10px}
+.split{display:grid;grid-template-columns:1fr;gap:1rem}
+
+/* ============ КАРТОЧКИ ============ */
+.card{
+  background:linear-gradient(180deg,rgba(232,229,221,.045),rgba(232,229,221,.02));
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:1rem 1.1rem;
+}
+.card p{font-size:.9rem;line-height:1.58}
+.card .big{
+  font-size:1.3rem;font-weight:800;color:var(--accent);
+  line-height:1.1;margin-bottom:.35rem;letter-spacing:-.02em;
+}
+
+/* ============ СПИСКИ ============ */
+.pts{list-style:none;margin-top:.55rem}
+.pts li{
+  position:relative;
+  padding-left:1.2rem;
+  margin:.55rem 0;
+  color:#cdc8bc;
+  font-size:.93rem;
+  line-height:1.62;
+}
+.pts li::before{
+  content:'';position:absolute;
+  left:0;top:.68em;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(201,164,92,.5);
+}
+
+/* ============ СТАТИСТИКА ============ */
+.stat{
+  font-size:clamp(1.9rem,9vw,2.6rem);
+  font-weight:850;line-height:1;
+  letter-spacing:-.03em;color:var(--accent);
+}
+.stat-l{
+  font-size:.83rem;color:var(--muted);
+  margin-top:.5rem;line-height:1.5;
+}
+
+/* ============ МЕТКИ ============ */
+.tag{
+  display:inline-block;
+  font-size:.68rem;padding:.32rem .68rem;
+  border-radius:99px;border:1px solid var(--line-strong);
+  color:#b8b3a8;margin:.22rem .22rem 0 0;
+  background:rgba(232,229,221,.03);
+  letter-spacing:.02em;
+}
+
+/* ============ ЦИТАТЫ ============ */
+.bigquote{
+  font-size:clamp(1.2rem,5.6vw,1.6rem);
+  font-weight:700;line-height:1.35;
+  letter-spacing:-.02em;color:#f2efe7;
+}
+
+/* ============ ТАЙМЛАЙН ============ */
+.timeline{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+.tl-row{
+  display:flex;flex-direction:column;gap:.15rem;
+  border-left:2px solid rgba(201,164,92,.4);
+  padding-left:.85rem;
+}
+.tl-row b{
+  color:var(--accent);
+  font-variant-numeric:tabular-nums;
+  font-size:.82rem;letter-spacing:.02em;
+}
+.tl-row span{color:#cdc8bc;font-size:.9rem;line-height:1.55}
+
+/* ============ ТИТУЛЬНЫЙ СЛАЙД ============ */
+.title-slide h1{font-size:clamp(2.2rem,12vw,3.6rem)}
+
+/* ============ UI ============ */
+
+/* Прогресс-бар сверху (под статус-баром) */
+#bar{
+  position:fixed;
+  top:var(--sat);left:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  z-index:60;
+  transition:width .35s cubic-bezier(.2,.7,.2,1);
+  box-shadow:0 0 10px rgba(201,164,92,.5);
+}
+
+/* Счётчик в шапке */
+#hud{
+  position:fixed;
+  top:calc(10px + var(--sat));
+  right:14px;
+  z-index:60;
+  font-size:.72rem;
+  color:var(--muted);
+  letter-spacing:.08em;
+  background:rgba(10,12,16,.75);
+  padding:.4rem .75rem;
+  border-radius:99px;
+  border:1px solid var(--line);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+#hud b{color:var(--fg);font-weight:700}
+
+/* Нижняя панель навигации */
+#nav{
+  position:fixed;
+  left:0;right:0;bottom:0;
+  padding:10px 16px calc(12px + var(--sab));
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:linear-gradient(to top,
+    rgba(10,12,16,.98) 0%,
+    rgba(10,12,16,.92) 60%,
+    rgba(10,12,16,0) 100%);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  z-index:60;
+}
+#nav button{
+  flex:1;
+  padding:14px 10px;
+  border:1px solid var(--line-strong);
+  background:rgba(232,229,221,.05);
+  color:#e8e5dd;
+  font:inherit;
+  font-size:.92rem;
+  font-weight:600;
+  letter-spacing:.01em;
+  border-radius:14px;
+  cursor:pointer;
+  -webkit-user-select:none;user-select:none;
+  transition:background .14s ease,border-color .14s ease,transform .08s ease;
+}
+#nav button:active{
+  background:rgba(201,164,92,.2);
+  border-color:rgba(201,164,92,.5);
+  transform:scale(.97);
+}
+#nav button:disabled{opacity:.28;pointer-events:none}
+
+/* Тонкая полоска прогресса под кнопками */
+#navProgress{
+  position:absolute;
+  left:16px;right:16px;
+  bottom:calc(2px + var(--sab));
+  height:2px;
+  background:rgba(232,229,221,.08);
+  border-radius:2px;
+  overflow:hidden;
+}
+#navProgress i{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius:2px;
+  transition:width .35s cubic-bezier(.2,.7,.2,1);
+}
+
+/* Ландшафт */
+@media (orientation: landscape) and (max-height: 500px){
+  .slide{
+    padding:calc(30px + var(--sat)) 22px calc(60px + var(--sab));
+  }
+  #nav{padding:6px 14px calc(6px + var(--sab))}
+  #nav button{padding:10px 10px;font-size:.82rem}
+  #hud{top:calc(6px + var(--sat));font-size:.68rem}
+}
+
+/* Совсем маленькие экраны (SE, mini) */
+@media (max-width: 380px){
+  .slide{padding-left:14px;padding-right:14px}
+  h2{font-size:1.28rem}
+  .lead{font-size:.96rem}
+  .card{padding:.9rem 1rem}
+}
+
+/* Уважаем настройку «уменьшить движение» */
+@media (prefers-reduced-motion: reduce){
+  .slide,.slide.active .s-inner > *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<div id="deck">
+
+<!-- ================= ПРОЛОГ ================= -->
+<section class="slide title-slide"><div class="s-inner">
+<div class="kicker">228 слайдов · полный курс</div>
+<h1>КИБЕР<span class="grad">БЕЗОПАСНОСТЬ</span></h1>
+<p class="lead" style="margin-top:1.2rem">От спартанской сциталы и шифра Цезаря — до постквантовой криптографии, модели Zero Trust и кибервойн современности. Одна презентация, которая проведёт вас через двадцать пять веков тайн, атак и защиты.</p>
+<div><span class="tag">История</span><span class="tag">Криптография</span><span class="tag">Сети</span><span class="tag">Атаки</span><span class="tag">Защита</span><span class="tag">Профессии</span><span class="tag">Будущее</span></div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">01 · Пролог</div>
+<h2>Что это за презентация</h2>
+<p class="lead">Это не набор слайдов «для галочки». Это девять модулей, каждый из которых — самостоятельная вселенная. Мы пойдём одновременно по хронологии и по логике: сначала — как всё началось, потом — как устроено, затем — как ломают, потом — как защищают, и наконец — куда всё движется.</p>
+<div class="grid g3">
+<div class="card"><h3>Глубина</h3><p>Никакой «воды». Даты, имена, механизмы, термины — всё по делу.</p></div>
+<div class="card"><h3>Связность</h3><p>Каждый слайд опирается на предыдущий. Вы не потеряетесь в деталях.</p></div>
+<div class="card"><h3>Практика</h3><p>В конце — чек-листы, карта профессий и куда идти учиться.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">02 · Пролог</div>
+<h2>Как навигировать</h2>
+<div class="grid g3">
+<div class="card"><h3>Свайп влево / вправо</h3><p>Основной жест — как в приложениях iOS.</p></div>
+<div class="card"><h3>Кнопки внизу</h3><p>«Назад» и «Вперёд» — всегда под большим пальцем.</p></div>
+<div class="card"><h3>Скролл внутри слайда</h3><p>Если текст не помещается — прокручивайте его вертикально.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">03 · Пролог</div>
+<h2>Почему это касается каждого</h2>
+<p class="lead">Кибербезопасность давно перестала быть делом «айтишников в подвале». Это инфраструктура современной цивилизации — как электричество, водопровод и транспорт. И ломается она ровно так же больно.</p>
+<ul class="pts">
+<li>Ваши деньги, паспорт, медицинская карта, переписка и репутация уже существуют в цифровом виде.</li>
+<li>Больницы, электростанции, банки, авиация и водоканалы управляются сетями и программами.</li>
+<li>Выборы, средства массовой информации, общественное мнение — объекты целенаправленных атак.</li>
+<li>Один клик по ссылке в письме может стоить компании миллионы и уничтожить карьеру.</li>
+<li>Средний пользователь за день оставляет больше цифровых следов, чем житель XIX века за всю жизнь.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">04 · Пролог</div>
+<h2>Масштаб в цифрах</h2>
+<div class="grid g4">
+<div class="card"><div class="stat grad">≈2 200</div><div class="stat-l">кибератак в день регистрируется в мире по усреднённым оценкам</div></div>
+<div class="card"><div class="stat grad">$10,5 трлн</div><div class="stat-l">прогнозируемый годовой ущерб от киберпреступности к 2025 году</div></div>
+<div class="card"><div class="stat grad">≈90 %</div><div class="stat-l">успешных атак начинаются с социальной инженерии, а не с «взлома»</div></div>
+<div class="card"><div class="stat grad">277 дней</div><div class="stat-l">среднемировое время от проникновения до обнаружения утечки</div></div>
+<div class="card"><div class="stat grad">3,5 млн</div><div class="stat-l">незакрытых вакансий в области информационной безопасности</div></div>
+<div class="card"><div class="stat grad">60 секунд</div><div class="stat-l">в среднем проходит до первой попытки сканирования нового сервера в сети</div></div>
+<div class="card"><div class="stat grad">1 из 3</div><div class="stat-l">компаний не переживает крупный киберинцидент без тяжёлых последствий</div></div>
+<div class="card"><div class="stat grad">×2</div><div class="stat-l">рост количества атак на IoT-устройства за последние годы</div></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">05 · Пролог</div>
+<h2>Кому адресована презентация</h2>
+<div class="grid g2">
+<div class="card"><h3>Новичку</h3><p>Вы получите полную карту предмета: откуда всё взялось, как связано между собой и что важно знать в первую очередь. Никаких белых пятен.</p></div>
+<div class="card"><h3>Практикующему специалисту</h3><p>Систематизация знаний. Вы вспомните то, что подзабыли, и увидите то, что пропустили в повседневной работе.</p></div>
+<div class="card"><h3>Руководителю</h3><p>Язык рисков, комплаенса, метрик и бюджетов — именно то, на чём говорят о безопасности с бизнесом.</p></div>
+<div class="card"><h3>Любопытному читателю</h3><p>Просто интересно, как устроен цифровой мир изнутри и почему он иногда ломается. Добро пожаловать.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">06 · Пролог</div>
+<h2>Карта путешествия</h2>
+<div class="timeline">
+<div class="tl-row"><b>I</b><span>Истоки — от сциталы и Цезаря до Morris Worm и рождения CERT</span></div>
+<div class="tl-row"><b>II</b><span>Основы — триада CIA, риск, модели угроз, Zero Trust, стандарты и комплаенс</span></div>
+<div class="tl-row"><b>III</b><span>Криптография — от DES и AES до постквантовых алгоритмов и атак по сторонним каналам</span></div>
+<div class="tl-row"><b>IV</b><span>Сети — OSI, TCP/IP, DNS, BGP, VPN, DDoS и микросегментация</span></div>
+<div class="tl-row"><b>V</b><span>Атаки — малварь, фишинг, веб-уязвимости, lateral movement и APT-группы</span></div>
+<div class="tl-row"><b>VI</b><span>Защита — SOC, EDR/XDR, DevSecOps, бэкапы и реагирование на инциденты</span></div>
+<div class="tl-row"><b>VII</b><span>Профессии — двадцать с лишним направлений и практический путь входа</span></div>
+<div class="tl-row"><b>VIII</b><span>Будущее — ИИ, квантовые вычисления, кибервойны и цифровой суверенитет</span></div>
+<div class="tl-row"><b>IX</b><span>Эпилог — правила, мифы, книги и ресурсы для дальнейшего роста</span></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">07 · Пролог</div>
+<h2>Главная мысль, которую стоит унести</h2>
+<p class="bigquote">Безопасность — это не продукт, который покупают один раз. Это <span class="grad">процесс</span>, который поддерживают постоянно.</p>
+<p class="lead" style="margin-top:1.2rem">Ни один файрвол, ни один антивирус, ни один сертификат не сделает вас защищённым навсегда. Защита — это непрерывный цикл: предположить угрозу → построить защиту → обнаружить провал → восстановиться → улучшиться. Разорвать этот цикл — значит проиграть.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">08 · Пролог</div>
+<h2>Начинаем</h2>
+<p class="bigquote">Мы стартуем за семь столетий до нашей эры. Там, где ещё нет ни компьютеров, ни электричества, ни самого слова «информация» — но уже есть <span class="grad">тайна</span>.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ I ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">09 · Модуль I · Истоки</div>
+<h2>Сцитала</h2>
+<p class="lead">Спарта, приблизительно VII век до нашей эры. Первое в истории механическое устройство шифрования, известное человечеству.</p>
+<div class="grid g3">
+<div class="card"><h3>Как работало</h3><p>На цилиндр плотно наматывалась кожаная лента, и текст писался поперёк витков. Снятая лента превращалась в бессмысленный набор букв. Чтобы прочитать — нужен цилиндр того же диаметра.</p></div>
+<div class="card"><h3>Почему это важно</h3><p>Впервые стойкость сообщения зависела не от секретности метода, а от секретности <em>ключа</em> — диаметра палки. Именно эта идея лежит в основе всей современной криптографии.</p></div>
+<div class="card"><h3>Наследие</h3><p>Принцип перестановки (transposition) живёт в современных шифрах, включая AES и ГОСТ. Сцитала — прямой предок идеи «шифр = алгоритм + ключ».</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">10 · Модуль I · Истоки</div>
+<h2>Шифр Цезаря</h2>
+<p class="lead">I век до нашей эры. Сдвиг каждой буквы на фиксированное число позиций в алфавите. Простейший пример подстановочного шифра.</p>
+<ul class="pts">
+<li>При сдвиге на три: A→D, B→E, «Veni» превращается в «Yhql».</li>
+<li>Ключевое пространство — всего 25 вариантов, то есть менее пяти бит энтропии.</li>
+<li>Взламывается перебором за секунды даже вручную или с карандашом.</li>
+<li>Но именно он ввёл понятие <b>подстановочного шифра</b> и ключа как параметра.</li>
+<li>Вариант с произвольным алфавитом использовался в армии и дипломатии вплоть до Нового времени.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">11 · Модуль I · Истоки</div>
+<h2>Атбаш и древние подстановки</h2>
+<p class="lead">Еврейская традиция: буква заменяется на «зеркальную» в алфавите. Алеф переходит в Тав, Бет — в Шин, и так далее.</p>
+<div class="grid g3">
+<div class="card"><h3>Принцип</h3><p>Фиксированная замена по таблице — без ключа в привычном смысле. Алгоритм прост, но зависимость от знания таблицы делает его слабым.</p></div>
+<div class="card"><h3>Где встречается</h3><p>В библейских текстах как приём сокрытия смысла, в средневековых каббалистических трактатах, в иудейской экзегетике.</p></div>
+<div class="card"><h3>Урок</h3><p>Секретность алгоритма не равна безопасности. Как только метод становится известен — защита исчезает целиком.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">12 · Модуль I · Истоки</div>
+<h2>Аль-Кинди и рождение криптоанализа</h2>
+<p class="lead">IX век, Багдад. Абу Юсуф Якуб ибн Исхак аль-Кинди пишет трактат «Рукопись о дешифровке криптографических сообщений» — первый в истории научный текст о взломе шифров.</p>
+<ul class="pts">
+<li>Он заметил: в любом естественном языке буквы встречаются с разной частотой.</li>
+<li>В арабском наиболее часты «алиф» и «лам»; в русском — «о», «е», «а», «и»; в английском — «e», «t», «a».</li>
+<li>Значит, можно сопоставить частоты шифртекста и частоты языка — и прочитать сообщение без знания ключа.</li>
+<li>Так родился <b>частотный анализ</b> — метод, который работает и тысячу двести лет спустя.</li>
+<li>Именно с этой работы начинается разделение криптографии и криптоанализа как двух самостоятельных дисциплин.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">13 · Модуль I · Истоки</div>
+<h2>Что такое частотный анализ</h2>
+<ul class="pts">
+<li>Считаем, сколько раз встречается каждый символ шифртекста.</li>
+<li>Сравниваем полученный профиль с известным распределением языка.</li>
+<li>Учитываем биграммы («ст», «но», «то») и триграммы («про», «что»).</li>
+<li>Сопоставляем позиции и восстанавливаем таблицу замены или ключ.</li>
+<li>Работает тем лучше, чем длиннее текст: на 500–800 символах моноалфавитный шифр почти всегда вскрывается.</li>
+<li>Почему это работает: естественный язык избыточен и статистически предсказуем. Буквы, сочетания и целые слова встречаются с устойчивыми вероятностями, и атакующий использует эти закономерности как «отпечаток» исходного текста.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">14 · Модуль I · Истоки</div>
+<h2>Европейские «чёрные кабинеты»</h2>
+<p class="lead">XV–XVIII века. Секретные службы перехвата и дешифровки почты при дворах крупнейших держав Европы.</p>
+<div class="grid g3">
+<div class="card"><h3>Вена</h3><p>Geheime Kabinettskanzlei — аккуратно вскрывала дипломатическую почту, копировала содержимое и возвращала её запечатанной обратно в почтовый поток.</p></div>
+<div class="card"><h3>Франция</h3><p>Cabinet Noir при Людовике XIV и его преемниках — целая индустрия перехвата, в которой работали десятки дешифровальщиков.</p></div>
+<div class="card"><h3>Англия</h3><p>Позже — комната 40 при Адмиралтействе, прямой наследник той же традиции и предок современного GCHQ.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">15 · Модуль I · Истоки</div>
+<h2>Шифр Виженера</h2>
+<p class="lead">XVI век. Полиалфавитный шифр: одна и та же буква открытого текста шифруется по-разному в зависимости от позиции.</p>
+<ul class="pts">
+<li>Использует ключевое слово, которое циклически повторяется по длине сообщения.</li>
+<li>Ломает простой частотный анализ: буква «е» уже не будет самой частой в шифртексте.</li>
+<li>Триста лет считался невзламываемым — его называли «le chiffre indéchiffrable».</li>
+<li>В 1863 году Фридрих Касиски показал, как найти длину ключа через повторяющиеся последовательности, и вскрыл шифр.</li>
+<li>Идея полиалфавитной замены в итоге легла в основу роторных машин XX века.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">16 · Модуль I · Истоки</div>
+<h2>Мария Стюарт и сила криптоанализа</h2>
+<p class="lead">1586 год. Королева Шотландии, находясь под арестом, вела шифрованную переписку с заговорщиками, планируя свержение Елизаветы I.</p>
+<div class="grid g3">
+<div class="card"><h3>Что произошло</h3><p>Английский криптоаналитик Томас Фелиппе вскрыл переписку и, что ещё важнее, аккуратно подделал приписку в письме.</p></div>
+<div class="card"><h3>Результат</h3><p>Мария подтвердила своё участие в заговоре — и это стало юридическим основанием для казни.</p></div>
+<div class="card"><h3>Урок</h3><p>Слабая криптография — не абстрактная проблема. Иногда её цена — человеческая жизнь.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">17 · Модуль I · Истоки</div>
+<h2>Шифровальные машины XIX–XX веков</h2>
+<p class="lead">Промышленная революция приходит в криптографию: на смену таблицам и карандашу приходят механизмы.</p>
+<ul class="pts">
+<li>Дисковые шифраторы с вращающимися роторами создают сложные полиалфавитные подстановки.</li>
+<li>Патент 1919 года — Артур Шербиус и его будущая Enigma, изначально задуманная для банковской связи.</li>
+<li>Появление телеграфа делает массовый перехват технически возможным и дешёвым.</li>
+<li>Криптография превращается из ремесла одиночек в государственную инфраструктуру.</li>
+<li>К концу 1930-х почти все крупные державы имеют собственные шифровальные службы.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">18 · Модуль I · Истоки</div>
+<h2>Первая мировая: телеграмма Циммермана</h2>
+<p class="lead">1917 год. Министр иностранных дел Германии Артур Циммерман предлагает Мексике союз против США в обмен на возврат Техаса, Нью-Мексико и Аризоны.</p>
+<div class="grid g3">
+<div class="card"><h3>Перехват</h3><p>Британская комната 40 расшифровала сообщение, использовав захваченные кодовые книги.</p></div>
+<div class="card"><h3>Публикация</h3><p>Телеграмма была обнародована — и вызвала в США бурю возмущения.</p></div>
+<div class="card"><h3>Последствие</h3><p>Вступление США в Первую мировую войну. Криптография впервые напрямую изменила ход мировой истории.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">19 · Модуль I · Истоки</div>
+<h2>Комната 40</h2>
+<p class="lead">Британское подразделение криптоанализа времён Первой мировой — прямой предок GCHQ и один из первых настоящих «офисов взлома».</p>
+<ul class="pts">
+<li>Собрало математиков, лингвистов, шахматистов и просто широко образованных людей.</li>
+<li>Работало не только с шифрами, но и с трафик-анализом: кто, кому, когда и как часто передавал сообщения.</li>
+<li>Ввело в практику принцип «мы знаем, но враг не должен знать, что мы знаем».</li>
+<li>Стало прототипом современного SIGINT — радиоэлектронной разведки.</li>
+<li>Опыт Комнаты 40 напрямую использовался при создании Блетчли-парка.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">20 · Модуль I · Истоки</div>
+<h2>Enigma</h2>
+<p class="lead">Немецкая роторная шифровальная машина. Комбинаторная сложность: порядка 158 квинтиллионов возможных настроек.</p>
+<div class="grid g3">
+<div class="card"><h3>Роторы</h3><p>Три–четыре вращающихся диска дают полиалфавитную замену. Каждое нажатие меняет положение роторов.</p></div>
+<div class="card"><h3>Рефлектор</h3><p>Возвращает сигнал обратно по другому пути. Создаёт удобство — и уязвимость: буква никогда не шифруется сама в себя.</p></div>
+<div class="card"><h3>Коммутационная панель</h3><p>Дополнительные попарные замены букв. Резко увеличивает ключевое пространство.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">21 · Модуль I · Истоки</div>
+<h2>Поляки против Enigma</h2>
+<p class="lead">Мариан Реевский, Ежи Ружицкий и Хенрик Зыгальский — сотрудники польского Бюро шифров, которые первыми пробили стену.</p>
+<ul class="pts">
+<li>Реевский математически реконструировал внутреннее устройство машины, не имея её на руках.</li>
+<li>Создал «циклометр» и первую «криптологическую бомбу» — электромеханическое устройство для поиска ключа.</li>
+<li>В июле 1939 года Польша передала все результаты британцам и французам.</li>
+<li>Без этого вклада Блетчли-парк мог бы опоздать на годы — а история Второй мировой пойти иначе.</li>
+<li>Польская школа криптоанализа считается одной из сильнейших в предвоенной Европе.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">22 · Модуль I · Истоки</div>
+<h2>Блетчли-парк</h2>
+<p class="lead">1940-е, Англия. Секретный центр, где в пиковые годы работало до десяти тысяч человек — большинство из них женщины.</p>
+<div class="grid g4">
+<div class="card"><div class="big">Hut 6</div><p>Взлом армейской и военно-воздушной Enigma</p></div>
+<div class="card"><div class="big">Hut 8</div><p>Морская Enigma, отдел Алана Тьюринга</p></div>
+<div class="card"><div class="big">Hut 3</div><p>Анализ и перевод разведданных</p></div>
+<div class="card"><div class="big">Hut 4</div><p>Военно-морская разведка и целеуказание</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">23 · Модуль I · Истоки</div>
+<h2>Алан Тьюринг и «бомба»</h2>
+<p class="lead">Математик, логик и один из отцов информатики. Разработал электромеханическую «Bombe» для систематического перебора настроек Enigma.</p>
+<ul class="pts">
+<li>Использовала «крабы» (cribs) — предполагаемые фрагменты открытого текста, например прогноз погоды.</li>
+<li>Отбрасывала противоречивые комбинации за счёт логических цепочек, резко сокращая перебор.</li>
+<li>Сократила время вскрытия суточного ключа с недель до нескольких часов.</li>
+<li>После войны Тьюринг занимался проектированием компьютеров и криптоанализом в Манчестере.</li>
+<li>В 1952 году был осуждён за гомосексуальность и погиб в 1954-м — уже после войны. Официальные извинения принесены в 2009 году.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">24 · Модуль I · Истоки</div>
+<h2>Colossus</h2>
+<p class="lead">1943–1945. Первый в мире электронный программируемый компьютер. Создан специально для взлома шифров Lorenz — более сложной машины, чем Enigma.</p>
+<div class="grid g3">
+<div class="card"><h3>Около 1500 ламп</h3><p>В версии Mk 2 — примерно 2400 электронных ламп и десятки тысяч резисторов.</p></div>
+<div class="card"><h3>Скорость</h3><p>Читал перфоленту со скоростью до 5000 символов в секунду — невероятно для 1940-х.</p></div>
+<div class="card"><h3>Значение</h3><p>Первый настоящий компьютер был построен для криптоанализа. Символично, что именно тайна дала миру вычислительную машину.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">25 · Модуль I · Истоки</div>
+<h2>Клод Шеннон — отец теории информации</h2>
+<p class="lead">Математик Bell Labs, превративший криптографию из ремесла в точную науку.</p>
+<ul class="pts">
+<li>1948 год: работа «A Mathematical Theory of Communication» — введены понятия бита, энтропии и пропускной способности канала.</li>
+<li>1949 год: «Communication Theory of Secrecy Systems» — фундамент современной криптографии как дисциплины.</li>
+<li>Сформулировал принцип Керкгоффса: стойкость системы должна зависеть только от секретности ключа.</li>
+<li>Ввёл понятие совершенной секретности и доказал, что одноразовый блокнот ей обладает.</li>
+<li>Его идеи лежат в основе сжатия данных, помехоустойчивого кодирования и современной криптографии.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">26 · Модуль I · Истоки</div>
+<h2>Принцип Керкгоффса</h2>
+<p class="bigquote">Система должна оставаться безопасной, даже если всё о ней известно — кроме ключа.</p>
+<p class="lead" style="margin-top:1.2rem">Это контринтуитивно. Кажется, что секретный алгоритм надёжнее: враг не знает, как мы шифруем, — и не расшифрует. Но история тысячи раз доказывала обратное: алгоритмы утекают, реверсинжинирятся, публикуются, а ключ можно сменить за одну секунду. Поэтому безопасность строят в предположении, что алгоритм известен всем.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">27 · Модуль I · Истоки</div>
+<h2>Холодная война и NSA</h2>
+<p class="lead">1952 год. В США создаётся Агентство национальной безопасности — крупнейшая криптографическая организация мира.</p>
+<div class="grid g3">
+<div class="card"><h3>Масштаб</h3><p>Внутри работает больше математиков с докторскими степенями, чем в любом университете мира.</p></div>
+<div class="card"><h3>Двойственность</h3><p>Одновременно защищает американские секреты и активно ломает чужие. Один отдел учит шифровать — другой учит расшифровывать.</p></div>
+<div class="card"><h3>Влияние</h3><p>Стандарты DES, SHA-1, SHA-2, участие в разработке AES, роль в создании современной криптографии как публичной дисциплины.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">28 · Модуль I · Истоки</div>
+<h2>TEMPEST и побочные излучения</h2>
+<p class="lead">Оказалось, что любая электроника излучает. И это излучение можно перехватить и восстановить изображение с экрана.</p>
+<ul class="pts">
+<li>Шпионаж через электромагнитные утечки — реальность с 1950-х годов, изученная и в СССР, и в США.</li>
+<li>Породил целую дисциплину — защиту от побочных каналов: экранирование, фильтры, генераторы шума.</li>
+<li>Сегодня известны акустические, оптические, тепловые и энергопотребительские каналы утечки.</li>
+<li>Отсюда же растут атаки по времени выполнения, по кэшу процессора, по потреблению энергии.</li>
+<li>Классические примеры: Spectre, Meltdown, Rowhammer — все они используют физику, а не логику системы.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">29 · Модуль I · Истоки</div>
+<h2>ARPANET, 1969</h2>
+<p class="lead">Первое сообщение между двумя компьютерами по сети. Первая попытка — «LO»: система упала на букве «G» слова «LOGIN».</p>
+<div class="grid g3">
+<div class="card"><h3>Узлы</h3><p>UCLA, SRI, Университет Санта-Барбары, Университет Юты — четыре точки, из которых вырос интернет.</p></div>
+<div class="card"><h3>Протокол</h3><p>Сначала NCP, затем в 1983 году — TCP/IP, который используется до сих пор.</p></div>
+<div class="card"><h3>Проблема</h3><p>Сеть проектировалась для доверия между академическими узлами. Безопасность не была заложена в основу — и это сказывается до сих пор.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">30 · Модуль I · Истоки</div>
+<h2>Сеть без замков</h2>
+<p class="lead">ARPANET строилась академическим сообществом, где все друг друга знали в лицо. Аутентификации почти не было. Это решение аукается до сих пор.</p>
+<ul class="pts">
+<li>TCP/IP по умолчанию не шифрует и не проверяет подлинность отправителя.</li>
+<li>DNS, BGP, ARP, SMTP — протоколы «доверия», где ответу можно подделать без особых усилий.</li>
+<li>Именно поэтому сегодня мы надстраиваем TLS, DNSSEC, RPKI, DMARC поверх старых протоколов.</li>
+<li>Безопасность как надстройка, а не как фундамент, — главная архитектурная боль интернета.</li>
+<li>Каждое новое поколение инженеров пытается это исправить, но цена смены базовых протоколов огромна.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">31 · Модуль I · Истоки</div>
+<h2>Creeper, 1971</h2>
+<p class="lead">Первая самореплицирующаяся программа в сети ARPANET. Написана Бобом Томасом из компании BBN.</p>
+<div class="grid g3">
+<div class="card"><h3>Что делала</h3><p>Копировала себя на другие машины и выводила на экран: «I'm the creeper, catch me if you can!»</p></div>
+<div class="card"><h3>Не вред</h3><p>Она была экспериментом, а не атакой. Но принцип — тот же, что у современных червей и ботнетов.</p></div>
+<div class="card"><h3>Наследие</h3><p>Доказала: код может распространяться сам по сети без участия человека.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">32 · Модуль I · Истоки</div>
+<h2>Reaper, 1972</h2>
+<p class="lead">Ответ на Creeper — программа, которая искала и удаляла его. Первый в истории антивирус.</p>
+<ul class="pts">
+<li>Работала по тому же принципу, что и «вирус», — реплицировалась по сети.</li>
+<li>Именно поэтому её называют первым антивирусом — и первым примером «оружия против оружия».</li>
+<li>Забавный парадокс: чтобы бороться с саморепликацией, нужна саморепликация.</li>
+<li>Гонка «щит и меч» началась здесь и не прекращается до сих пор.</li>
+<li>Обе программы — Creeper и Reaper — были скорее шуткой исследователей, чем угрозой.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">33 · Модуль I · Истоки</div>
+<h2>Хакерская этика</h2>
+<p class="lead">MIT, 1950–60-е годы. Слово «хакер» означало не преступника, а человека, который разбирается в системе до основания и любит это делать.</p>
+<div class="grid g3">
+<div class="card"><h3>Доступ</h3><p>К компьютерам должен быть свободный доступ — чтобы можно было учиться и экспериментировать.</p></div>
+<div class="card"><h3>Знание</h3><p>Вся информация должна быть свободной. Секреты мешают прогрессу.</p></div>
+<div class="card"><h3>Недоверие к власти</h3><p>Децентрализация превыше всего. Никто не должен единолично управлять технологиями.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Стивен Леви сформулировал эти принципы в книге «Хакеры» в 1984 году — и зафиксировал культуру, которая потом разделилась на «белых» и «чёрных».</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">34 · Модуль I · Истоки</div>
+<h2>Фрикинг</h2>
+<p class="lead">Взлом телефонных сетей ради бесплатных звонков — и ради чистого любопытства к тому, как всё устроено.</p>
+<ul class="pts">
+<li>Джон Дрейпер, известный как Captain Crunch, обнаружил, что свисток из коробки хлопьев даёт тон 2600 герц.</li>
+<li>Этот тон управлял телефонными коммутаторами AT&T — и позволял совершать бесплатные междугородние вызовы.</li>
+<li>Так родилась культура изучения инфраструктуры — не только компьютеров, но и всей сети вокруг.</li>
+<li>Многие будущие легенды кибербезопасности вышли из фрикинга.</li>
+<li>Журнал 2600, названный в честь того самого тона, выходит до сих пор.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">35 · Модуль I · Истоки</div>
+<h2>BBS, журнал 2600 и первое сообщество</h2>
+<p class="lead">1970–80-е. Электронные доски объявлений, специализированные журналы, обмен знаниями через модемы и телефонные линии.</p>
+<div class="grid g3">
+<div class="card"><h3>BBS</h3><p>Локальные узлы, куда пользователи звонили по обычной телефонной линии. Здесь обменивались файлами, эксплойтами и текстовыми манифестами.</p></div>
+<div class="card"><h3>2600</h3><p>Журнал, названный в честь тона 2600 Гц. С 1984 года — площадка для обсуждения фрикинга, криптографии и свободы информации.</p></div>
+<div class="card"><h3>Культура</h3><p>Текстовые файлы, модемы на 300 бод, закрытые «элитные» борды. Предтеча современного infosec-сообщества, конференций и CTF.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">36 · Модуль I · Истоки</div>
+<h2>Morris Worm, 1988</h2>
+<p class="lead">Момент, когда интернет впервые проснулся в панике. Червь Роберта Морриса заразил около шести тысяч машин — примерно 10 % тогдашней сети.</p>
+<div class="grid g3">
+<div class="card"><h3>Механизм</h3><p>Использовал уязвимости sendmail и finger, а также подбор слабых паролей. Распространялся без всякого участия пользователя.</p></div>
+<div class="card"><h3>Ошибка</h3><p>Из-за бага в коде реплицировался слишком агрессивно — и вместо тихого распространения положил системы.</p></div>
+<div class="card"><h3>Последствие</h3><p>Создана CERT/CC — первая в мире структура реагирования на компьютерные инциденты. Родилась профессия incident responder.</p></div>
+</div>
+</div></section>
+
+<!-- ================= МОДУЛЬ II ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">37 · Модуль II · Основы</div>
+<h2>Что такое кибербезопасность</h2>
+<p class="lead">Защита систем, сетей, данных и людей от цифровых атак — и способность продолжать работать, когда защита всё-таки пробита.</p>
+<div class="grid g3">
+<div class="card"><h3>Технический слой</h3><p>Код, сети, железо, криптография, облака и контейнеры. То, что можно настроить и обновить.</p></div>
+<div class="card"><h3>Процессный слой</h3><p>Политики, регламенты, реагирование, обучение, аудит. То, что живёт в документах и ритуалах.</p></div>
+<div class="card"><h3>Человеческий слой</h3><p>Культура, осведомлённость, поведение, доверие. То, что нельзя купить, но можно вырастить.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">38 · Модуль II · Основы</div>
+<h2>Триада CIA</h2>
+<p class="lead">Фундамент, на котором стоит вся дисциплина. Три свойства, которые мы защищаем в первую очередь.</p>
+<div class="grid g3">
+<div class="card"><div class="big">C</div><h3>Confidentiality</h3><p>Данные доступны только тем, кому положено. Обеспечивается шифрованием, разграничением доступа и классификацией информации.</p></div>
+<div class="card"><div class="big">I</div><h3>Integrity</h3><p>Данные не изменены незаметно. Обеспечивается хешами, подписями, контролем версий и неизменяемым аудитом.</p></div>
+<div class="card"><div class="big">A</div><h3>Availability</h3><p>Система доступна, когда она нужна. Обеспечивается резервированием, защитой от DDoS и проверенными бэкапами.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">39 · Модуль II · Основы</div>
+<h2>Конфиденциальность</h2>
+<ul class="pts">
+<li>Шифрование at rest (шифрование дисков, баз данных) и in transit (TLS, IPsec, SSH).</li>
+<li>Разграничение доступа: ролевое (RBAC), атрибутное (ABAC), списки контроля (ACL).</li>
+<li>Классификация данных: публичные, внутренние, конфиденциальные, секретные.</li>
+<li>DLP-системы следят, чтобы чувствительные данные не утекали наружу через почту, USB или облака.</li>
+<li>Типовые нарушения: утечка клиентской базы, слив переписки топ-менеджеров, кража исходного кода.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">40 · Модуль II · Основы</div>
+<h2>Целостность</h2>
+<ul class="pts">
+<li>Хеш-суммы: любое изменение данных меняет отпечаток и легко обнаруживается.</li>
+<li>Цифровые подписи подтверждают авторство и неизменность содержимого.</li>
+<li>Контроль версий и неизменяемые логи (WORM-хранилища) фиксируют историю.</li>
+<li>Контрольные суммы в протоколах передачи ловят искажения на линии.</li>
+<li>Типовые нарушения: подмена реквизитов платежа, изменение медицинской карты, фальсификация новости или документа.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">41 · Модуль II · Основы</div>
+<h2>Доступность</h2>
+<ul class="pts">
+<li>Резервирование: кластеры, балансировщики нагрузки, географическое распределение.</li>
+<li>Защита от DDoS: scrubbing-центры, anycast, CDN, rate limiting.</li>
+<li>Бэкапы: регулярные, проверенные, изолированные от основной инфраструктуры.</li>
+<li>План восстановления после катастрофы (DRP) и план непрерывности бизнеса (BCP).</li>
+<li>Типовые нарушения: сайт лежит сутками, банкоматы не работают, больница не видит электронные карты пациентов.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">42 · Модуль II · Основы</div>
+<h2>Расширенная триада</h2>
+<div class="grid g4">
+<div class="card"><h3>Аутентичность</h3><p>Подтверждение того, что субъект — действительно тот, за кого он себя выдаёт.</p></div>
+<div class="card"><h3>Неотказуемость</h3><p>Нельзя отрицать факт совершённого действия. Юридически значимая гарантия.</p></div>
+<div class="card"><h3>Подотчётность</h3><p>Каждое действие можно связать с конкретным субъектом и моментом времени.</p></div>
+<div class="card"><h3>Приватность</h3><p>Защита персональных данных как отдельная ценность, независимая от безопасности.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">43 · Модуль II · Основы</div>
+<h2>Актив, угроза, уязвимость, риск</h2>
+<div class="grid g2">
+<div class="card"><h3>Актив (Asset)</h3><p>То, что имеет ценность: данные, сервер, приложение, репутация, ключевые люди, бизнес-процесс.</p></div>
+<div class="card"><h3>Угроза (Threat)</h3><p>Потенциальный источник вреда: хакер, конкурент, инсайдер, стихия, случайная ошибка сотрудника.</p></div>
+<div class="card"><h3>Уязвимость (Vulnerability)</h3><p>Слабое место, через которое угроза может реализоваться: незакрытый порт, слабый пароль, дыра в коде.</p></div>
+<div class="card"><h3>Риск (Risk)</h3><p>Совокупная оценка: вероятность реализации угрозы через уязвимость, умноженная на ущерб от неё.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">44 · Модуль II · Основы</div>
+<h2>Формула риска</h2>
+<p class="bigquote">Риск = Вероятность × Ущерб</p>
+<ul class="pts" style="margin-top:1.2rem">
+<li>Управлять риском можно четырьмя способами: снизить вероятность, снизить ущерб, принять риск или избежать его полностью.</li>
+<li>Снижение вероятности — патчи, обучение сотрудников, многофакторная аутентификация.</li>
+<li>Снижение ущерба — бэкапы, страховка, сегментация сети, планы восстановления.</li>
+<li>Принятие риска — осознанное решение, зафиксированное документально и одобренное руководством.</li>
+<li>Избегание риска — отказ от процесса или технологии. Иногда это правильный выбор.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">45 · Модуль II · Основы</div>
+<h2>Моделирование угроз</h2>
+<p class="lead">Систематический ответ на четыре вопроса. Методология, которую в 1990-е сформулировал Брюс Шнайер и популяризировала Microsoft.</p>
+<div class="grid g4">
+<div class="card"><div class="big">1</div><p>Что именно мы строим и какую ценность защищаем?</p></div>
+<div class="card"><div class="big">2</div><p>Что может пойти не так и кто заинтересован в этом?</p></div>
+<div class="card"><div class="big">3</div><p>Что мы будем делать с каждой выявленной угрозой?</p></div>
+<div class="card"><div class="big">4</div><p>Хорошо ли мы это сделали — и не появилось ли новых угроз?</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">46 · Модуль II · Основы</div>
+<h2>STRIDE</h2>
+<p class="lead">Мнемоника Microsoft для категоризации угроз. Каждая буква — отдельный класс рисков.</p>
+<div class="grid g3">
+<div class="card"><h3>S — Spoofing</h3><p>Подмена идентичности. Кто-то выдаёт себя за другого.</p></div>
+<div class="card"><h3>T — Tampering</h3><p>Изменение данных или кода без обнаружения.</p></div>
+<div class="card"><h3>R — Repudiation</h3><p>Отрицание факта совершённого действия.</p></div>
+<div class="card"><h3>I — Information disclosure</h3><p>Утечка информации, которая должна быть закрыта.</p></div>
+<div class="card"><h3>D — Denial of service</h3><p>Отказ в обслуживании легитимным пользователям.</p></div>
+<div class="card"><h3>E — Elevation of privilege</h3><p>Повышение привилегий внутри системы.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">47 · Модуль II · Основы</div>
+<h2>Поверхность атаки</h2>
+<p class="lead">Совокупность всех точек, через которые злоумышленник может взаимодействовать с системой.</p>
+<ul class="pts">
+<li>Сетевые порты и открытые сервисы.</li>
+<li>Веб-приложения, мобильные приложения и публичные API.</li>
+<li>Сотрудники, подрядчики, партнёры и бывшие работники.</li>
+<li>Физический доступ к офисам, серверным и рабочим местам.</li>
+<li>Цепочка поставок: библиотеки, обновления, вендоры, облачные сервисы.</li>
+<li>Каждый новый сервис или интеграция увеличивают поверхность атаки.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">48 · Модуль II · Основы</div>
+<h2>Вектор атаки</h2>
+<p class="lead">Конкретный путь, по которому атакующий добирается до цели. Отличается от поверхности атаки тем, что описывает конкретный сценарий.</p>
+<div class="grid g3">
+<div class="card"><h3>Удалённый</h3><p>Через интернет, без физического доступа к устройству.</p></div>
+<div class="card"><h3>Локальный</h3><p>Требует доступа к устройству или внутренней сети.</p></div>
+<div class="card"><h3>Смежный</h3><p>Через соседнюю систему в той же сети или на том же хосте.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">49 · Модуль II · Основы</div>
+<h2>Cyber Kill Chain</h2>
+<p class="lead">Модель Lockheed Martin: семь этапов атаки. Понимание каждого этапа даёт точки для вмешательства и остановки атакующего.</p>
+<div class="timeline">
+<div class="tl-row"><b>1</b><span>Reconnaissance — разведка открытых источников и самой цели</span></div>
+<div class="tl-row"><b>2</b><span>Weaponization — подготовка оружия: эксплойт, полезная нагрузка</span></div>
+<div class="tl-row"><b>3</b><span>Delivery — доставка: письмо, USB, сайт, уязвимый сервис</span></div>
+<div class="tl-row"><b>4</b><span>Exploitation — срабатывание эксплойта и запуск кода</span></div>
+<div class="tl-row"><b>5</b><span>Installation — закрепление в системе: автозапуск, сервис, задача</span></div>
+<div class="tl-row"><b>6</b><span>Command & Control — канал связи с управляющим сервером</span></div>
+<div class="tl-row"><b>7</b><span>Actions on Objectives — достижение цели: кража, шифрование, саботаж</span></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">50 · Модуль II · Основы</div>
+<h2>MITRE ATT&CK</h2>
+<p class="lead">База знаний тактик и техник реальных атакующих. Де-факто стандарт для аналитиков SOC по всему миру.</p>
+<div class="grid g3">
+<div class="card"><h3>Тактики</h3><p>«Зачем» — цель этапа: Initial Access, Persistence, Privilege Escalation, Exfiltration и другие.</p></div>
+<div class="card"><h3>Техники</h3><p>«Как» — конкретный способ: T1566 Phishing, T1059 Command and Scripting Interpreter, T1003 OS Credential Dumping.</p></div>
+<div class="card"><h3>Процедуры</h3><p>Конкретные реализации у конкретных групп: APT28, APT29, Lazarus, Sandworm и десятков других.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">51 · Модуль II · Основы</div>
+<h2>Принцип наименьших привилегий</h2>
+<p class="bigquote">Каждый субъект должен иметь ровно столько прав, сколько необходимо для его задачи — и ни на байт больше.</p>
+<p class="lead" style="margin-top:1.2rem">Простой принцип, который нарушают почти все. Админские права «на всякий случай», общие учётные записи, сервисные аккаунты с правами администратора домена — классика, превращающая одну уязвимость в полный захват инфраструктуры.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">52 · Модуль II · Основы</div>
+<h2>Эшелонированная защита</h2>
+<p class="lead">Defense in Depth. Не одна стена, а многослойная луковица, где пробитие одного слоя не означает катастрофы.</p>
+<ul class="pts">
+<li>Периметр: файрвол, WAF, системы обнаружения и предотвращения вторжений.</li>
+<li>Сеть: сегментация, VLAN, микросегментация, шифрование трафика.</li>
+<li>Хост: EDR, ужесточение конфигурации, регулярные патчи.</li>
+<li>Приложение: безопасный код, SAST и DAST в пайплайне.</li>
+<li>Данные: шифрование, DLP, строгие права доступа.</li>
+<li>Человек: обучение, симуляции фишинга, культура сообщать о подозрительном.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">53 · Модуль II · Основы</div>
+<h2>Zero Trust</h2>
+<p class="bigquote">Никогда не доверяй, всегда проверяй.</p>
+<ul class="pts" style="margin-top:1.2rem">
+<li>Отказ от концепции «внутренняя сеть = доверенная зона».</li>
+<li>Каждый запрос аутентифицируется и авторизуется независимо от того, откуда он пришёл.</li>
+<li>Микросегментация: доступ только «от сервиса к сервису», ничего лишнего.</li>
+<li>Непрерывная проверка контекста: устройство, геолокация, время, поведение пользователя.</li>
+<li>Реализуется через ZTNA, SASE, IAM, MFA и политики как код.</li>
+<li>Введён в оборот Джоном Киндервагом из Forrester в 2010 году — и стал стандартом к 2020-м.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">54 · Модуль II · Основы</div>
+<h2>Defense in Depth против Zero Trust</h2>
+<div class="split">
+<div><h3 class="acc">Defense in Depth</h3><p>Строит слои защиты вокруг актива. Предполагает, что внутри периметра находится доверенная зона. Исторически — основная модель корпоративной безопасности.</p></div>
+<div><h3 class="acc">Zero Trust</h3><p>Отказывается от самого понятия «внутри». Каждый доступ проверяется отдельно. Современный стандарт для облака и распределённых команд.</p></div>
+</div>
+<p class="lead" style="margin-top:1.2rem">На практике лучшие архитектуры используют оба подхода: слои защиты плюс отсутствие слепого доверия к любому сегменту.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">55 · Модуль II · Основы</div>
+<h2>Человеческий фактор</h2>
+<p class="lead">Самый мощный и одновременно самый уязвимый элемент любой системы.</p>
+<div class="grid g4">
+<div class="card"><div class="stat grad">≈90 %</div><div class="stat-l">атак начинаются с человека, а не с технической уязвимости</div></div>
+<div class="card"><div class="stat grad">1 из 3</div><div class="stat-l">сотрудников откроет качественно оформленное фишинговое письмо</div></div>
+<div class="card"><div class="stat grad">≈20 %</div><div class="stat-l">перейдут по ссылке и введут свои учётные данные</div></div>
+<div class="card"><div class="stat grad">$$$</div><div class="stat-l">обучение обходится в разы дешевле разбора последствий инцидента</div></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">56 · Модуль II · Основы</div>
+<h2>Социальная инженерия — введение</h2>
+<p class="lead">Взлом человека, а не системы. Манипуляция доверием, страхом, срочностью и авторитетом.</p>
+<div class="grid g3">
+<div class="card"><h3>Эмоции</h3><p>Страх, жадность, любопытство, желание помочь, чувство вины — самые сильные рычаги.</p></div>
+<div class="card"><h3>Контекст</h3><p>Атакующий использует то, что вы уже знаете и чему доверяете: имена коллег, проекты, привычки.</p></div>
+<div class="card"><h3>Масштаб</h3><p>Работает везде: от колл-центра до совета директоров. Технический уровень защиты тут ни при чём.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">57 · Модуль II · Основы</div>
+<h2>Инсайдеры</h2>
+<p class="lead">Угроза изнутри. Тот, у кого уже есть доступ и кто знает систему лучше многих.</p>
+<div class="grid g3">
+<div class="card"><h3>Злонамеренный</h3><p>Умышленно крадёт данные, саботирует или передаёт информацию конкурентам.</p></div>
+<div class="card"><h3>Халатный</h3><p>Нарушает правила по неосторожности: хранит пароли в блокноте, отправляет данные на личную почту.</p></div>
+<div class="card"><h3>Завербованный</h3><p>Был лоялен, но его склонили деньгами, шантажом или идеологией.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Инсайдер опаснее внешнего атакующего: он знает, где лежит ценное, и не оставляет следов взлома.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">58 · Модуль II · Основы</div>
+<h2>ISO/IEC 27001</h2>
+<p class="lead">Международный стандарт управления информационной безопасностью. Один из самых признанных в мире.</p>
+<ul class="pts">
+<li>Описывает не «как защищаться», а «как управлять системой защиты».</li>
+<li>Требует построения ISMS — системы менеджмента информационной безопасности.</li>
+<li>Основан на цикле PDCA: Plan → Do → Check → Act.</li>
+<li>Сертификация добровольная, но часто требуется контрагентами и регуляторами.</li>
+<li>Приложение A содержит девяносто три меры контроля в четырёх доменах.</li>
+<li>Обновление 2022 года переработало структуру и добавило требования к облаку и threat intelligence.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">59 · Модуль II · Основы</div>
+<h2>NIST Cybersecurity Framework</h2>
+<p class="lead">Американский рамочный документ, ставший мировым ориентиром для организаций любого размера.</p>
+<div class="grid g4">
+<div class="card"><div class="big">Identify</div><p>Понять, что у вас есть и что важно защищать</p></div>
+<div class="card"><div class="big">Protect</div><p>Построить защиту до атаки</p></div>
+<div class="card"><div class="big">Detect</div><p>Обнаружить атаку как можно раньше</p></div>
+<div class="card"><div class="big">Respond</div><p>Отреагировать структурированно</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Пятая функция — <b>Recover</b>: восстановиться и вернуться к работе. В версии 2.0 добавлена шестая — <b>Govern</b>: управление самим процессом безопасности.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">60 · Модуль II · Основы</div>
+<h2>GDPR и защита персональных данных</h2>
+<p class="lead">Регламент ЕС, вступивший в силу в 2018 году. Изменил подход к приватности во всём мире.</p>
+<ul class="pts">
+<li>Штрафы до двадцати миллионов евро или до четырёх процентов глобального оборота — что больше.</li>
+<li>Обязательное уведомление регулятора об утечке в течение семидесяти двух часов.</li>
+<li>Право на доступ, исправление, удаление («право быть забытым») и перенос данных.</li>
+<li>Принцип Privacy by Design: приватность должна быть заложена с самого начала, а не добавлена позже.</li>
+<li>Экстратерриториальность: применяется к любой компании, работающей с данными жителей ЕС.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">61 · Модуль II · Основы</div>
+<h2>Комплаенс: PCI DSS, HIPAA, 152-ФЗ</h2>
+<div class="grid g3">
+<div class="card"><h3>PCI DSS</h3><p>Стандарт для организаций, работающих с платёжными картами. Двенадцать требований, охватывающих сеть, шифрование, доступ и мониторинг.</p></div>
+<div class="card"><h3>HIPAA</h3><p>Защита медицинских данных в США. Регулирует хранение, передачу и раскрытие защищённой медицинской информации.</p></div>
+<div class="card"><h3>152-ФЗ</h3><p>Российский закон о персональных данных: локализация на территории страны, обязательное согласие, уведомления регулятору.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">62 · Модуль II · Основы</div>
+<h2>Аудит и логирование</h2>
+<p class="lead">Если событие не залогировано — его для расследования не было. Логи — это память системы и главный инструмент анализа.</p>
+<ul class="pts">
+<li>Что логировать: аутентификацию, изменения прав, доступ к данным, сетевые соединения, запуск процессов.</li>
+<li>Синхронизация времени через NTP обязательна — без неё корреляция событий невозможна.</li>
+<li>Логи нужно защищать от изменения: WORM-хранилища, отдельный сервер, подписывание записей.</li>
+<li>Сроки хранения: от девяноста дней до нескольких лет в зависимости от требований регуляторов.</li>
+<li>Объём данных быстро растёт — нужны системы нормализации, парсинга и поиска.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">63 · Модуль II · Основы</div>
+<h2>Управление инцидентами</h2>
+<p class="lead">Инцидент — это не «если», а «когда». Ключевой вопрос — насколько быстро вы его заметите и как отреагируете.</p>
+<div class="grid g4">
+<div class="card"><div class="big">1</div><p>Подготовка: планы, роли, инструменты, контакты</p></div>
+<div class="card"><div class="big">2</div><p>Обнаружение и анализ: что произошло и насколько серьёзно</p></div>
+<div class="card"><div class="big">3</div><p>Сдерживание: остановить распространение</p></div>
+<div class="card"><div class="big">4</div><p>Устранение: удалить атакующего и закрыть вектор</p></div>
+<div class="card"><div class="big">5</div><p>Восстановление: вернуть системы в строй</p></div>
+<div class="card"><div class="big">6</div><p>Разбор полётов: что улучшить и как не повторить</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">64 · Модуль II · Основы</div>
+<h2>BCP и DRP</h2>
+<div class="split">
+<div><h3 class="acc">BCP — Business Continuity Plan</h3><p>Как компания продолжает работать во время катастрофы: альтернативные площадки, удалённый режим, ручные процедуры, приоритеты процессов. Отвечает на вопрос «как выжить бизнесу».</p></div>
+<div><h3 class="acc">DRP — Disaster Recovery Plan</h3><p>Как восстанавливается ИТ-инфраструктура. Два ключевых параметра: RTO — сколько времени система может лежать, и RPO — сколько данных допустимо потерять. Отвечает на вопрос «как поднять технологии».</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">65 · Модуль II · Основы</div>
+<h2>Метрики безопасности</h2>
+<p class="lead">То, что нельзя измерить, нельзя улучшить. Но и «метрика ради метрики» приносит только вред.</p>
+<div class="grid g3">
+<div class="card"><h3>MTTD</h3><p>Среднее время до обнаружения инцидента. Ключевой показатель зрелости SOC.</p></div>
+<div class="card"><h3>MTTR</h3><p>Среднее время до устранения. Определяет реальный ущерб от атаки.</p></div>
+<div class="card"><h3>Покрытие патчами</h3><p>Процент систем с актуальными обновлениями безопасности.</p></div>
+<div class="card"><h3>Фишинг-кликабельность</h3><p>Процент сотрудников, кликнувших на тестовое письмо. Мера культуры.</p></div>
+<div class="card"><h3>Критичные CVE</h3><p>Количество открытых уязвимостей высокого риска в инфраструктуре.</p></div>
+<div class="card"><h3>Покрытие MFA</h3><p>Процент учётных записей, защищённых многофакторной аутентификацией.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">66 · Модуль II · Основы</div>
+<h2>Культура безопасности</h2>
+<p class="bigquote">Лучший файрвол — это сотрудник, который знает, что делать, и не боится об этом сказать.</p>
+<p class="lead" style="margin-top:1.2rem">Культура — это когда сообщить о подозрительном письме не стыдно, а нормально. Когда безопасность — не «отдел, который мешает работать», а часть работы каждого. Такая культура строится годами и рушится за один показательный «разнос» за ошибку.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ III ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">67 · Модуль III · Криптография</div>
+<h2>Что такое криптография</h2>
+<p class="lead">Наука о защите информации математическими методами. Четыре задачи, которые она решает.</p>
+<div class="grid g4">
+<div class="card"><h3>Конфиденциальность</h3><p>Шифрование: никто, кроме получателя, не читает содержимое.</p></div>
+<div class="card"><h3>Целостность</h3><p>Хеширование: любое изменение данных обнаруживается.</p></div>
+<div class="card"><h3>Аутентичность</h3><p>Подписи и MAC: сообщение действительно от того, от кого оно пришло.</p></div>
+<div class="card"><h3>Неотказуемость</h3><p>Цифровая подпись: автор не может отказаться от своего сообщения.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">68 · Модуль III · Криптография</div>
+<h2>Симметричное шифрование</h2>
+<p class="lead">Один и тот же ключ используется и для шифрования, и для расшифрования.</p>
+<div class="grid g3">
+<div class="card"><h3>Плюсы</h3><p>Очень быстро. Идеально для больших объёмов данных: диски, трафик, архивы.</p></div>
+<div class="card"><h3>Минусы</h3><p>Проблема распределения ключей: как безопасно передать его второй стороне?</p></div>
+<div class="card"><h3>Примеры</h3><p>AES, ChaCha20, 3DES (устарел), ГОСТ 34.12-2018 «Кузнечик» и «Магма».</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">69 · Модуль III · Криптография</div>
+<h2>DES</h2>
+<p class="lead">Data Encryption Standard, 1977 год. Первый публичный криптографический стандарт США, разработанный при участии IBM и NSA.</p>
+<ul class="pts">
+<li>Ключ всего пятьдесят шесть бит — сегодня это вскрывается за часы, а то и минуты.</li>
+<li>Блочный шифр: блоки по шестьдесят четыре бита, шестнадцать раундов сети Фейстеля.</li>
+<li>В 1998 году организация EFF взломала его за пятьдесят шесть часов на специально построенной машине Deep Crack.</li>
+<li>Формально заменён на 3DES, а затем на AES.</li>
+<li>Остаётся важным уроком: размер ключа должен расти вместе с вычислительной мощностью.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">70 · Модуль III · Криптография</div>
+<h2>AES</h2>
+<p class="lead">Advanced Encryption Standard, 2001 год. Победитель открытого конкурса NIST — шифр Rijndael, разработанный бельгийцами Винсентом Рейменом и Йоаном Дайменом.</p>
+<div class="grid g3">
+<div class="card"><h3>Ключи</h3><p>128, 192 или 256 бит. Чем длиннее ключ, тем больше раундов и выше стойкость.</p></div>
+<div class="card"><h3>Блоки</h3><p>Сто двадцать восемь бит, десять, двенадцать или четырнадцать раундов в зависимости от ключа.</p></div>
+<div class="card"><h3>Статус</h3><p>Считается стойким. Практические атаки направлены на реализацию, а не на сам алгоритм.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">71 · Модуль III · Криптография</div>
+<h2>Режимы работы блочных шифров</h2>
+<div class="grid g3">
+<div class="card"><h3>ECB</h3><p>Каждый блок шифруется независимо. Плохо: одинаковые блоки дают одинаковый шифртекст. Классическая иллюстрация — «пингвин ECB».</p></div>
+<div class="card"><h3>CBC</h3><p>Каждый блок XOR-ится с предыдущим. Нужен случайный вектор инициализации. Уязвим к атакам на padding.</p></div>
+<div class="card"><h3>GCM</h3><p>Современный стандарт: шифрование плюс аутентификация (AEAD). Используется в TLS 1.3 и в большинстве современных протоколов.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">72 · Модуль III · Криптография</div>
+<h2>Потоковые шифры и одноразовый блокнот</h2>
+<ul class="pts">
+<li>Гаммирование: открытый текст складывается по XOR с псевдослучайным потоком бит.</li>
+<li>One-Time Pad — теоретически невскрываемый шифр при трёх условиях: ключ случаен, равен длине сообщения и используется только один раз.</li>
+<li>На практике OTP почти неприменим: распределение ключей и их хранение становятся нерешаемой задачей.</li>
+<li>Современные потоковые шифры: RC4 (устарел), ChaCha20 (отличный выбор), Salsa20.</li>
+<li>Критично: никогда не переиспользовать nonce или IV в потоковом шифре — это уничтожает всю стойкость.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">73 · Модуль III · Криптография</div>
+<h2>Асимметричное шифрование</h2>
+<p class="lead">Пара ключей: открытый шифрует, закрытый расшифровывает. Или наоборот — для цифровой подписи.</p>
+<div class="grid g3">
+<div class="card"><h3>Революция</h3><p>Решает проблему распределения ключей: открытый ключ можно публиковать где угодно и кому угодно.</p></div>
+<div class="card"><h3>Медленнее</h3><p>В тысячи раз медленнее симметричного. Используется для обмена ключами и подписей, но не для шифрования данных.</p></div>
+<div class="card"><h3>Гибрид</h3><p>На практике: асимметрика договаривается о сеансовом ключе, дальше общение идёт симметрикой.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">74 · Модуль III · Криптография</div>
+<h2>RSA</h2>
+<p class="lead">1977 год. Рональд Ривест, Ади Шамир и Леонард Адлеман. Стойкость основана на вычислительной сложности факторизации больших чисел.</p>
+<ul class="pts">
+<li>Ключи длиной 2048–4096 бит — актуальный минимум для новых систем.</li>
+<li>Шифрование: c = m^e mod n. Расшифрование: m = c^d mod n.</li>
+<li>Открытый ключ — пара (e, n), закрытый — (d, n).</li>
+<li>Уязвим к слабой генерации ключей, атакам по времени и, в перспективе, к квантовым вычислениям.</li>
+<li>До сих пор широко используется в TLS, SSH, PGP и электронных подписях.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">75 · Модуль III · Криптография</div>
+<h2>Диффи-Хеллман</h2>
+<p class="lead">1976 год. Первый протокол обмена ключами по открытому каналу. Революция, сравнимая по значению с изобретением самого шифрования.</p>
+<div class="grid g3">
+<div class="card"><h3>Идея</h3><p>Две стороны договариваются об общем секрете, не передавая его по каналу. Наблюдатель видит только публичные значения.</p></div>
+<div class="card"><h3>Основа</h3><p>Задача дискретного логарифмирования в конечном поле или на эллиптической кривой.</p></div>
+<div class="card"><h3>Уязвимость</h3><p>Без аутентификации уязвим к атаке «человек посередине». Отсюда — необходимость сертификатов и подписей.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">76 · Модуль III · Криптография</div>
+<h2>Эллиптические кривые</h2>
+<p class="lead">ECC. Та же стойкость, что у RSA, но при гораздо меньшем размере ключа. Идеально для мобильных и IoT-устройств.</p>
+<div class="grid g4">
+<div class="card"><div class="big">256 бит</div><p>ECC эквивалентен примерно 3072 битам RSA</p></div>
+<div class="card"><div class="big">384 бита</div><p>ECC эквивалентен примерно 7680 битам RSA</p></div>
+<div class="card"><div class="big">521 бит</div><p>ECC эквивалентен примерно 15360 битам RSA</p></div>
+<div class="card"><div class="big">Быстрее</div><p>Меньше вычислений, меньше энергии, меньше размер ключей и подписей.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">77 · Модуль III · Криптография</div>
+<h2>Хеш-функции</h2>
+<p class="lead">Преобразуют данные произвольной длины в отпечаток фиксированной длины. Необратимо.</p>
+<div class="grid g3">
+<div class="card"><h3>Свойства</h3><p>Детерминированность, лавинный эффект, стойкость к коллизиям, необратимость, фиксированная длина.</p></div>
+<div class="card"><h3>Применение</h3><p>Проверка целостности, хранение паролей, цифровые подписи, блокчейн, дедупликация.</p></div>
+<div class="card"><h3>Аналогия</h3><p>Отпечаток пальца: по нему нельзя восстановить человека, но можно уверенно опознать.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">78 · Модуль III · Криптография</div>
+<h2>MD5 и SHA-1: почему они мертвы</h2>
+<ul class="pts">
+<li>MD5 (1991): коллизии найдены в 2004 году. Практическая атака занимает минуты на обычном ноутбуке.</li>
+<li>SHA-1 (1995): коллизия SHAttered в 2017 году — два разных PDF с одинаковым хешем.</li>
+<li>Оба всё ещё встречаются в легаси-системах, что представляет серьёзный риск.</li>
+<li>Для подписей и сертификатов их использовать нельзя категорически.</li>
+<li>Для проверки контрольных сумм (не безопасности) иногда допустимо, но лучше сразу брать SHA-256.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">79 · Модуль III · Криптография</div>
+<h2>SHA-2 и SHA-3</h2>
+<div class="split">
+<div><h3 class="acc">SHA-2</h3><p>Семейство 2001 года: SHA-224, 256, 384, 512. До сих пор надёжен и повсеместен. Основа современных подписей, TLS и блокчейна.</p></div>
+<div><h3 class="acc">SHA-3</h3><p>2015 год. Принципиально другая конструкция — «губка» (sponge, алгоритм Keccak). Не замена SHA-2, а страховка на случай, если SHA-2 будет сломан.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">80 · Модуль III · Криптография</div>
+<h2>HMAC</h2>
+<p class="lead">Hash-based Message Authentication Code. Хеш с секретным ключом — подтверждает и целостность, и авторство.</p>
+<ul class="pts">
+<li>HMAC-SHA256 — стандарт де-факто для подписи API-запросов.</li>
+<li>Используется в JWT, TLS, IPsec, AWS Signature, банковских API.</li>
+<li>Отличается от простого хеша: без знания ключа подделку создать невозможно.</li>
+<li>Не путать с цифровой подписью: HMAC симметричен, подпись — асимметрична.</li>
+<li>Правильная реализация важна: нельзя просто «добавить ключ к сообщению», атака length extension работает именно против такого подхода.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">81 · Модуль III · Криптография</div>
+<h2>Соль и перец</h2>
+<div class="grid g2">
+<div class="card"><h3>Соль (salt)</h3><p>Случайные данные, добавляемые к каждому паролю перед хешированием. Хранится рядом с хешем. Уничтожает радужные таблицы и делает одинаковые пароли разными.</p></div>
+<div class="card"><h3>Перец (pepper)</h3><p>Секретное значение, общее для всей системы, хранится отдельно от базы. Дополнительный слой на случай утечки только БД. Не заменяет соль, а дополняет её.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">82 · Модуль III · Криптография</div>
+<h2>Пароли: bcrypt, scrypt, Argon2</h2>
+<p class="lead">Обычные хеши вроде SHA-256 для паролей не годятся — они слишком быстры. Нужны медленные функции.</p>
+<div class="grid g3">
+<div class="card"><h3>bcrypt</h3><p>Настраиваемая сложность. Проверен временем. Встроенная соль и защита от радужных таблиц.</p></div>
+<div class="card"><h3>scrypt</h3><p>Требует много памяти — противостоит атакам на GPU и специализированных чипах.</p></div>
+<div class="card"><h3>Argon2</h3><p>Победитель Password Hashing Competition. Настраивается по времени, памяти и параллелизму. Современный выбор.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">83 · Модуль III · Криптография</div>
+<h2>PKI — инфраструктура открытых ключей</h2>
+<p class="lead">Система, которая связывает открытые ключи с реальными сущностями. Без неё асимметричная криптография не работала бы в масштабе интернета.</p>
+<div class="grid g3">
+<div class="card"><h3>CA</h3><p>Удостоверяющий центр, подписывающий сертификаты своим закрытым ключом.</p></div>
+<div class="card"><h3>RA</h3><p>Регистрационный центр, проверяющий заявителей перед выдачей сертификата.</p></div>
+<div class="card"><h3>CRL и OCSP</h3><p>Списки отозванных сертификатов и онлайн-проверка статуса в реальном времени.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">84 · Модуль III · Криптография</div>
+<h2>X.509</h2>
+<p class="lead">Формат цифрового сертификата, на котором держится HTTPS и вся современная PKI.</p>
+<ul class="pts">
+<li>Содержит: открытый ключ, данные владельца, издателя, срок действия, назначение.</li>
+<li>Подписан закрытым ключом удостоверяющего центра.</li>
+<li>Расширения: Subject Alternative Name, Key Usage, Extended Key Usage, CRL Distribution Points.</li>
+<li>Виды проверки: DV (только домен), OV (организация), EV (расширенная проверка).</li>
+<li>Сроки действия постепенно сокращаются: с нескольких лет до месяцев.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">85 · Модуль III · Криптография</div>
+<h2>Цепочка доверия</h2>
+<p class="lead">Браузер доверяет корневым сертификатам, установленным в системе. Они подписывают промежуточные. Те — конечные.</p>
+<div class="grid g3">
+<div class="card"><h3>Root CA</h3><p>Самоподписанный, хранится офлайн в аппаратном модуле безопасности (HSM).</p></div>
+<div class="card"><h3>Intermediate CA</h3><p>Подписан корнем, используется для повседневной работы. Компрометация одного не ломает всю систему.</p></div>
+<div class="card"><h3>Leaf</h3><p>Сертификат конкретного сайта или сервиса.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Компрометация корневого удостоверяющего центра — катастрофа для всего интернета. Именно поэтому их так мало и они так тщательно охраняются.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">86 · Модуль III · Криптография</div>
+<h2>TLS 1.3</h2>
+<p class="lead">Современный стандарт защиты трафика. Опубликован в 2018 году — спустя десять лет после TLS 1.2.</p>
+<div class="grid g3">
+<div class="card"><h3>Быстрее</h3><p>Handshake за один round-trip вместо двух. При повторном подключении — режим 0-RTT.</p></div>
+<div class="card"><h3>Безопаснее</h3><p>Убраны устаревшие шифры, обязательна forward secrecy: компрометация ключа не раскрывает прошлые сессии.</p></div>
+<div class="card"><h3>Проще</h3><p>Меньше опций — меньше ошибок конфигурации. Невозможно случайно включить слабый шифр.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">87 · Модуль III · Криптография</div>
+<h2>HTTPS</h2>
+<p class="lead">HTTP поверх TLS. Сегодня — безусловный стандарт, а не опция. Браузеры прямо помечают сайты без HTTPS как небезопасные.</p>
+<ul class="pts">
+<li>Шифрует трафик между браузером и сервером.</li>
+<li>Подтверждает подлинность сервера через сертификат.</li>
+<li>Защищает от прослушивания и подмены в публичных сетях.</li>
+<li>HSTS заставляет браузер использовать только HTTPS и не даёт «откатиться» на HTTP.</li>
+<li>Let's Encrypt сделал сертификаты бесплатными и автоматическими — HTTPS стал доступен всем.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">88 · Модуль III · Криптография</div>
+<h2>SSH</h2>
+<p class="lead">Secure Shell — защищённый доступ к удалённым системам. Заменил небезопасные telnet и rlogin.</p>
+<div class="grid g3">
+<div class="card"><h3>Аутентификация</h3><p>Пароль или, что гораздо лучше, ключевая пара. Пароли в SSH — почти всегда плохая практика.</p></div>
+<div class="card"><h3>Туннели</h3><p>Проброс портов, SOCKS-прокси, VPN-подобные схемы. Универсальный инструмент.</p></div>
+<div class="card"><h3>Правила</h3><p>Отключить root-логин, запретить пароли, использовать fail2ban. Смена порта снижает шум, но не защищает.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">89 · Модуль III · Криптография</div>
+<h2>PGP и end-to-end шифрование</h2>
+<p class="lead">Pretty Good Privacy, 1991 год. Филипп Циммерманн выложил её бесплатно — и попал под расследование за «экспорт оружия».</p>
+<ul class="pts">
+<li>Модель доверия: не иерархия удостоверяющих центров, а сеть взаимных подписей.</li>
+<li>Используется для шифрования почты, файлов и цифровых подписей.</li>
+<li>GnuPG — свободная реализация, стандарт де-факто.</li>
+<li>End-to-end: только отправитель и получатель видят содержимое, даже сервер не может его прочитать.</li>
+<li>Идеологически важно: PGP вернул людям контроль над шифрованием, отобранный государством.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">90 · Модуль III · Криптография</div>
+<h2>Signal Protocol</h2>
+<p class="lead">Протокол двойного храповика (Double Ratchet). Используется в Signal, WhatsApp, Google Messages и Facebook Messenger.</p>
+<div class="grid g3">
+<div class="card"><h3>Forward secrecy</h3><p>Компрометация текущего ключа не раскрывает прошлые сообщения.</p></div>
+<div class="card"><h3>Post-compromise security</h3><p>После компрометации система со временем восстанавливает стойкость за счёт ротации ключей.</p></div>
+<div class="card"><h3>X3DH</h3><p>Extended Triple Diffie-Hellman — установление сессии без онлайн-собеседника.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">91 · Модуль III · Криптография</div>
+<h2>Квантовая угроза</h2>
+<p class="lead">Квантовый компьютер с алгоритмом Шора за минуты сломает RSA и ECC. Это не «если», а «когда».</p>
+<div class="grid g3">
+<div class="card"><h3>Алгоритм Шора</h3><p>Факторизация и дискретный логарифм — экспоненциально быстрее, чем на классическом компьютере.</p></div>
+<div class="card"><h3>Алгоритм Гровера</h3><p>Ослабляет симметричные шифры вдвое — 256-битный ключ становится эквивалентен 128-битному.</p></div>
+<div class="card"><h3>Harvest now, decrypt later</h3><p>Уже сегодня трафик записывается, чтобы расшифровать его, когда появятся квантовые компьютеры.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">92 · Модуль III · Криптография</div>
+<h2>Постквантовая криптография</h2>
+<p class="lead">NIST выбрал первые стандарты в 2022–2024 годах. Начинается переход, который займёт десятилетия.</p>
+<div class="grid g4">
+<div class="card"><h3>CRYSTALS-Kyber</h3><p>Обмен ключами, основа на решётках</p></div>
+<div class="card"><h3>CRYSTALS-Dilithium</h3><p>Цифровые подписи, решётки</p></div>
+<div class="card"><h3>FALCON</h3><p>Компактные подписи, решётки</p></div>
+<div class="card"><h3>SPHINCS+</h3><p>На хешах, максимально консервативен</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Переход займёт десятилетия: обновить придётся всё — от браузеров и банкоматов до спутников и промышленного оборудования.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">93 · Модуль III · Криптография</div>
+<h2>Криптографические атаки</h2>
+<ul class="pts">
+<li>Атака на реализацию, а не на алгоритм: ошибки в коде, слабая генерация случайных чисел.</li>
+<li>Атаки на padding (Padding Oracle) — классическая уязвимость CBC-режима.</li>
+<li>Повторное использование nonce — фатальная ошибка для потоковых шифров.</li>
+<li>Bleichenbacher — атака на RSA с PKCS#1 v1.5, до сих пор встречается в легаси-системах.</li>
+<li>Атаки на слабую генерацию ключей: печально знаменитый случай Debian OpenSSL в 2008 году.</li>
+<li>Даунгрейд-атаки: заставить протокол использовать устаревший, слабый алгоритм.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">94 · Модуль III · Криптография</div>
+<h2>Атаки по сторонним каналам</h2>
+<p class="lead">Атака не на математику, а на физику. Криптография может быть идеальной — а железо выдаёт секреты.</p>
+<div class="grid g3">
+<div class="card"><h3>Время</h3><p>Разное время выполнения операций выдаёт биты ключа.</p></div>
+<div class="card"><h3>Энергопотребление</h3><p>Профиль потребления зависит от обрабатываемых данных.</p></div>
+<div class="card"><h3>Электромагнитное излучение</h3><p>Можно перехватить и восстановить обрабатываемую информацию.</p></div>
+<div class="card"><h3>Кэш</h3><p>Spectre, Meltdown и другие — утечки через спекулятивное исполнение.</p></div>
+<div class="card"><h3>Акустика</h3><p>Звук работы процессора, кулера или нажатий клавиш.</p></div>
+<div class="card"><h3>Оптика</h3><p>Светодиоды, отражения от экрана, даже изменение яркости.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">95 · Модуль III · Криптография</div>
+<h2>Криптоанализ: от таблиц до суперкомпьютеров</h2>
+<div class="timeline">
+<div class="tl-row"><b>IX век</b><span>Частотный анализ аль-Кинди</span></div>
+<div class="tl-row"><b>1863</b><span>Касиски ломает шифр Виженера</span></div>
+<div class="tl-row"><b>1932</b><span>Реевский реконструирует Enigma</span></div>
+<div class="tl-row"><b>1943</b><span>Colossus — первый электронный компьютер</span></div>
+<div class="tl-row"><b>1977</b><span>DES и начало публичной криптографии</span></div>
+<div class="tl-row"><b>1998</b><span>EFF Deep Crack ломает DES за 56 часов</span></div>
+<div class="tl-row"><b>2017</b><span>SHAttered — коллизия SHA-1</span></div>
+<div class="tl-row"><b>2020-е</b><span>Постквантовые стандарты и квантовые горизонты</span></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">96 · Модуль III · Криптография</div>
+<h2>Криптография: итоги</h2>
+<p class="bigquote">Криптография — это не про то, как спрятать. Это про то, как <span class="grad">доказать</span>.</p>
+<p class="lead" style="margin-top:1.2rem">Она даёт математические гарантии: это сообщение не читали, не меняли, отправил именно этот человек. Всё остальное в безопасности — надстройка над этими гарантиями.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ IV ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">97 · Модуль IV · Сети</div>
+<h2>Модель OSI и TCP/IP</h2>
+<p class="lead">Семь уровней OSI — теоретическая модель. Четыре уровня TCP/IP — практика интернета.</p>
+<div class="grid g3">
+<div class="card"><h3>OSI</h3><p>Физический, канальный, сетевой, транспортный, сеансовый, представления, прикладной.</p></div>
+<div class="card"><h3>TCP/IP</h3><p>Доступ к сети, интернет, транспорт, приложения. Именно этот стек реализован в реальных системах.</p></div>
+<div class="card"><h3>Зачем это знать</h3><p>Атаки и защиты живут на конкретных уровнях. Понимание уровней — половина диагностики инцидента.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">98 · Модуль IV · Сети</div>
+<h2>Канальный уровень и ARP</h2>
+<p class="lead">ARP сопоставляет IP-адрес с MAC-адресом внутри локальной сети. И у него нет никакой аутентификации.</p>
+<ul class="pts">
+<li>ARP-spoofing: атакующий отвечает на чужие запросы и перехватывает трафик.</li>
+<li>Результат — атака «человек посередине» внутри локальной сети.</li>
+<li>Защита: Dynamic ARP Inspection, статические записи, шифрование трафика поверх.</li>
+<li>Урок: протоколы «доверия» из 1970-х не годятся для современного мира.</li>
+<li>Аналогичные проблемы есть у NDP в IPv6 и у ряда протоколов обнаружения соседей.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">99 · Модуль IV · Сети</div>
+<h2>VLAN и сегментация</h2>
+<p class="lead">Разделение одной физической сети на несколько логических. Ключевой принцип сдерживания распространения атаки.</p>
+<div class="grid g3">
+<div class="card"><h3>Зачем</h3><p>Если один сегмент скомпрометирован, остальные остаются нетронутыми.</p></div>
+<div class="card"><h3>VLAN hopping</h3><p>Атака перехода между VLAN через double tagging или DTP. Реализуется, если порты настроены неаккуратно.</p></div>
+<div class="card"><h3>Современнее</h3><p>Микросегментация на уровне отдельных рабочих нагрузок, а не портов коммутатора.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">100 · Модуль IV · Сети</div>
+<h2>IP и маршрутизация</h2>
+<ul class="pts">
+<li>IPv4: тридцать два бита, адреса давно кончились. IPv6: сто двадцать восемь бит, практически бесконечны.</li>
+<li>Маршрутизация — выбор пути пакета через сеть по таблицам маршрутов.</li>
+<li>Протоколы маршрутизации: OSPF, BGP, RIP, IS-IS, EIGRP.</li>
+<li>IP по умолчанию не гарантирует ни доставку, ни порядок, ни подлинность отправителя.</li>
+<li>IP-спуфинг: подмена адреса отправителя — основа многих атак и DDoS-усилений.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">101 · Модуль IV · Сети</div>
+<h2>TCP и UDP</h2>
+<div class="split">
+<div><h3 class="acc">TCP</h3><p>Устанавливает соединение через three-way handshake, гарантирует доставку и порядок, управляет потоком и перегрузкой. Используется там, где важна надёжность: веб, почта, файлы.</p></div>
+<div><h3 class="acc">UDP</h3><p>Без соединения, без гарантий, минимальные накладные расходы. Используется для видео, игр, DNS, VoIP. Именно поэтому удобен для DDoS-амплификации.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">102 · Модуль IV · Сети</div>
+<h2>DNS</h2>
+<p class="lead">«Телефонная книга интернета». Превращает домены в IP-адреса. Без неё интернет просто не работает.</p>
+<div class="grid g3">
+<div class="card"><h3>Иерархия</h3><p>Корневые серверы → серверы доменов верхнего уровня (.com, .ru) → авторитативные серверы конкретного домена.</p></div>
+<div class="card"><h3>Типы записей</h3><p>A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA.</p></div>
+<div class="card"><h3>Проблема</h3><p>Изначально DNS не аутентифицирован и не шифрован. Ответ легко подделать на пути.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">103 · Модуль IV · Сети</div>
+<h2>Атаки на DNS</h2>
+<ul class="pts">
+<li>DNS-spoofing: подмена ответа — пользователь попадает на чужой сайт.</li>
+<li>Cache poisoning: отравление кэша резолвера надолго.</li>
+<li>DNS-туннелирование: передача данных через DNS-запросы для обхода файрволов.</li>
+<li>DNS-амплификация: DDoS с коэффициентом усиления до пятидесяти раз.</li>
+<li>Защита: DNSSEC (криптографические подписи), DoH/DoT (шифрование), фильтрация, rate limiting.</li>
+<li>Регистраторы и регистрация доменов — тоже цель: угон домена ломает всё сразу.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">104 · Модуль IV · Сети</div>
+<h2>DHCP</h2>
+<p class="lead">Автоматически выдаёт IP-адреса, шлюзы и DNS-серверы устройствам в сети. Один из самых доверчивых протоколов.</p>
+<div class="grid g3">
+<div class="card"><h3>Атака 1</h3><p>Rogue DHCP-сервер выдаёт себя за легитимный и перенаправляет трафик через атакующего.</p></div>
+<div class="card"><h3>Атака 2</h3><p>DHCP starvation — исчерпание пула адресов, чтобы новые устройства не могли подключиться.</p></div>
+<div class="card"><h3>Защита</h3><p>DHCP Snooping, port security, 802.1X, статические привязки для критичных устройств.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">105 · Модуль IV · Сети</div>
+<h2>NAT</h2>
+<p class="lead">Network Address Translation. Позволяет множеству устройств выходить в интернет через один публичный IP-адрес.</p>
+<ul class="pts">
+<li>Экономит IPv4-адреса и скрывает внутреннюю структуру сети от внешнего наблюдателя.</li>
+<li>Не является средством безопасности, хотя иногда так воспринимается.</li>
+<li>Осложняет входящие соединения — отсюда port forwarding, UPnP, STUN и TURN.</li>
+<li>Логи NAT критичны для расследований: без них не связать сессию с конкретным устройством.</li>
+<li>В IPv6 идея NAT теряет смысл, но на практике частично сохраняется для приватности.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">106 · Модуль IV · Сети</div>
+<h2>Межсетевые экраны</h2>
+<div class="grid g3">
+<div class="card"><h3>Packet filter</h3><p>Смотрит на заголовки: IP, порт, протокол. Быстро, но поверхностно.</p></div>
+<div class="card"><h3>Stateful</h3><p>Помнит состояния соединений. Умнее, но требует больше ресурсов.</p></div>
+<div class="card"><h3>NGFW</h3><p>Next-Gen: глубокая инспекция пакетов, IPS, идентификация приложений, инспекция TLS.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Правило нулевого доверия: сначала запретить всё, потом разрешать конкретное и обоснованное.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">107 · Модуль IV · Сети</div>
+<h2>WAF — Web Application Firewall</h2>
+<p class="lead">Защита веб-приложений на уровне HTTP. Фильтрует запросы по сигнатурам и поведению.</p>
+<ul class="pts">
+<li>Блокирует SQL-инъекции, XSS, path traversal, бот-трафик и автоматизированные атаки.</li>
+<li>ModSecurity + OWASP CRS — популярный открытый стек.</li>
+<li>Облачные WAF: Cloudflare, AWS WAF, Akamai, Yandex Smart Web Security.</li>
+<li>Ограничение: не заменит безопасный код. Обходится при нестандартной логике приложения.</li>
+<li>Часто становится источником ложных срабатываний — требует тонкой настройки.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">108 · Модуль IV · Сети</div>
+<h2>IDS и IPS</h2>
+<div class="split">
+<div><h3 class="acc">IDS</h3><p>Intrusion Detection System. Обнаруживает и оповещает. Пассивна, не влияет на трафик. Позволяет разбираться без спешки.</p></div>
+<div><h3 class="acc">IPS</h3><p>Intrusion Prevention System. Обнаруживает и блокирует. Активна, встраивается в разрыв трафика. Требует аккуратной настройки, чтобы не блокировать легитимное.</p></div>
+</div>
+<p class="lead" style="margin-top:1.2rem">Методы: сигнатурный (точно, но не знает нового), аномальный (ловит неизвестное, но шумит), поведенческий (баланс между ними).</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">109 · Модуль IV · Сети</div>
+<h2>Прокси и обратный прокси</h2>
+<div class="grid g2">
+<div class="card"><h3>Forward proxy</h3><p>Клиент → прокси → интернет. Скрывает клиента, фильтрует доступ, кэширует, управляет политиками.</p></div>
+<div class="card"><h3>Reverse proxy</h3><p>Клиент → прокси → серверы. Скрывает инфраструктуру, балансирует нагрузку, терминирует TLS, защищает приложения.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Nginx, HAProxy, Envoy, Traefik — стандартный набор современного edge-слоя.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">110 · Модуль IV · Сети</div>
+<h2>VPN</h2>
+<p class="lead">Virtual Private Network. Шифрованный туннель через недоверенную сеть.</p>
+<div class="grid g3">
+<div class="card"><h3>Remote access</h3><p>Сотрудник → корпоративная сеть. WireGuard, OpenVPN, IKEv2.</p></div>
+<div class="card"><h3>Site-to-site</h3><p>Соединение офисов между собой в единую сеть.</p></div>
+<div class="card"><h3>Consumer VPN</h3><p>Смена IP и шифрование трафика. Не делает вас анонимным и не защищает от malware.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">111 · Модуль IV · Сети</div>
+<h2>IPsec</h2>
+<p class="lead">Набор протоколов для защиты IP-трафика на сетевом уровне. Основа большинства корпоративных VPN.</p>
+<ul class="pts">
+<li>AH — аутентификация заголовков, ESP — шифрование и аутентификация полезной нагрузки.</li>
+<li>IKE и IKEv2 — обмен ключами и установление ассоциаций безопасности.</li>
+<li>Режимы: транспортный (защищает полезную нагрузку) и туннельный (шифрует весь пакет).</li>
+<li>Сложен в настройке и отладке — отсюда популярность WireGuard.</li>
+<li>До сих пор широко используется в корпоративной среде и для соединения облаков.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">112 · Модуль IV · Сети</div>
+<h2>Безопасность Wi-Fi</h2>
+<div class="grid g4">
+<div class="card"><h3>WEP</h3><p>1997. Мёртв. Взламывается за минуты даже без специального оборудования.</p></div>
+<div class="card"><h3>WPA</h3><p>2003. Временное решение, TKIP. Тоже устарел и не должен использоваться.</p></div>
+<div class="card"><h3>WPA2</h3><p>2004. AES-CCMP. Уязвим к KRACK и атакам на WPS. Всё ещё массово используется.</p></div>
+<div class="card"><h3>WPA3</h3><p>2018. SAE вместо PSK, forward secrecy, защита от офлайн-подбора пароля.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">113 · Модуль IV · Сети</div>
+<h2>Беспроводные атаки</h2>
+<ul class="pts">
+<li>Evil Twin — фальшивая точка доступа с тем же именем, что и легитимная.</li>
+<li>Deauth-атака — принудительное отключение клиента для перехвата handshake.</li>
+<li>Rogue AP — несанкционированная точка доступа внутри периметра компании.</li>
+<li>WPS PIN brute-force — восьмизначный PIN подбирается за часы.</li>
+<li>Защита: WPA3-Enterprise, 802.1X, WIPS, отключение WPS, регулярный мониторинг эфира.</li>
+<li>Публичные Wi-Fi по-прежнему опасны — используйте VPN или мобильный интернет для чувствительных операций.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">114 · Модуль IV · Сети</div>
+<h2>BGP и его уязвимости</h2>
+<p class="lead">Border Gateway Protocol — «маршрутизация интернета». Основан на доверии между автономными системами и не имеет встроенной защиты.</p>
+<div class="grid g3">
+<div class="card"><h3>BGP hijack</h3><p>Объявление чужих префиксов и перенаправление трафика через себя.</p></div>
+<div class="card"><h3>BGP leak</h3><p>Случайная утечка маршрутов, ломающая связность крупных регионов.</p></div>
+<div class="card"><h3>Защита</h3><p>RPKI, MANRS, фильтрация префиксов, мониторинг аномалий, соглашения с провайдерами.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">115 · Модуль IV · Сети</div>
+<h2>DDoS</h2>
+<p class="lead">Distributed Denial of Service — отказ в обслуживании распределёнными силами. Цель — не взломать, а положить.</p>
+<div class="grid g3">
+<div class="card"><h3>Объёмные</h3><p>Забить канал гигабитами трафика: UDP flood, DNS-амплификация, NTP-амплификация, memcached.</p></div>
+<div class="card"><h3>Протокольные</h3><p>Исчерпать ресурсы: SYN flood, ping of death, фрагментация.</p></div>
+<div class="card"><h3>Прикладные</h3><p>HTTP flood, Slowloris, атаки на API. Труднее всего отличить от легитимного трафика.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">116 · Модуль IV · Сети</div>
+<h2>Защита от DDoS</h2>
+<ul class="pts">
+<li>Anycast: один IP-адрес — множество точек присутствия по миру.</li>
+<li>Scrubbing-центры: очистка трафика и передача чистого дальше к цели.</li>
+<li>Rate limiting и поведенческий анализ на edge-уровне.</li>
+<li>CDN поглощает объёмные атаки за счёт географической распределённости.</li>
+<li>Резервирование: несколько провайдеров, автоскейлинг, graceful degradation.</li>
+<li>План связи с провайдером заранее — во время атаки его писать поздно.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">117 · Модуль IV · Сети</div>
+<h2>Микросегментация</h2>
+<p class="lead">Не «периметр против интернета», а тысячи микро-периметров внутри центра обработки данных и облака.</p>
+<div class="grid g3">
+<div class="card"><h3>Принцип</h3><p>Каждая рабочая нагрузка общается только с теми, кому действительно должна.</p></div>
+<div class="card"><h3>Реализация</h3><p>Сетевые политики на уровне pod, VM, контейнера. Service mesh, CNI-плагины, cloud security groups.</p></div>
+<div class="card"><h3>Эффект</h3><p>Захват одной машины не даёт свободно перемещаться по всей сети и искать ценные активы.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">118 · Модуль IV · Сети</div>
+<h2>SD-WAN и SASE</h2>
+<div class="split">
+<div><h3 class="acc">SD-WAN</h3><p>Программно-определяемая распределённая сеть. Умная маршрутизация между офисами, филиалами и облаком без дорогого MPLS.</p></div>
+<div><h3 class="acc">SASE</h3><p>Secure Access Service Edge. Слияние сети и безопасности в облачную услугу: SWG, CASB, ZTNA, FWaaS и SD-WAN в едином стеке.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">119 · Модуль IV · Сети</div>
+<h2>Облачные сети и VPC</h2>
+<ul class="pts">
+<li>VPC — виртуальное частное облако: изолированная сеть внутри публичного облака.</li>
+<li>Security Groups и Network ACLs — два уровня фильтрации с разными моделями.</li>
+<li>Private Link и Private Endpoint — доступ к сервисам без выхода в интернет.</li>
+<li>Ошибки конфигурации S3-бакетов и security groups — классика громких утечек.</li>
+<li>Инфраструктура как код плюс политики как код = проверяемая безопасность.</li>
+<li>Разделение аккаунтов по средам: dev, staging, prod — обязательная практика.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">120 · Модуль IV · Сети</div>
+<h2>CDN и edge-вычисления</h2>
+<p class="lead">Контент-сети хранят копии данных ближе к пользователю. Побочный эффект — мощная защита.</p>
+<div class="grid g3">
+<div class="card"><h3>Поглощение</h3><p>DDoS размазывается по тысячам узлов и теряет силу.</p></div>
+<div class="card"><h3>WAF на edge</h3><p>Фильтрация ближе к источнику атаки, меньше задержка.</p></div>
+<div class="card"><h3>Edge computing</h3><p>Логика выполняется на периферии — новая поверхность атаки и новая защита одновременно.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">121 · Модуль IV · Сети</div>
+<h2>Сетевой мониторинг</h2>
+<ul class="pts">
+<li>NetFlow и IPFIX — статистика потоков без полного содержимого.</li>
+<li>Полный захват пакетов (PCAP) — для глубокого анализа и расследований.</li>
+<li>NDR — Network Detection and Response: поведенческий анализ сети с ML.</li>
+<li>TLS-инспекция — спорная, но иногда необходимая мера в корпоративной сети.</li>
+<li>Базовая линия: без знания «как обычно» невозможно заметить «как странно».</li>
+<li>Визуализация помогает: дашборды и карты топологии ускоряют реакцию аналитика.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">122 · Модуль IV · Сети</div>
+<h2>Сети: итоги</h2>
+<p class="bigquote">Интернет построен на доверии, которого не должно было быть. Вся современная сетевая безопасность — попытка это исправить.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ V ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">123 · Модуль V · Атаки</div>
+<h2>Классификация атак</h2>
+<div class="grid g3">
+<div class="card"><h3>По цели</h3><p>Кража данных, вымогательство, саботаж, шпионаж, разрушение репутации, конкурентная разведка.</p></div>
+<div class="card"><h3>По вектору</h3><p>Сеть, веб, человек, физический доступ, цепочка поставок, облако.</p></div>
+<div class="card"><h3>По автору</h3><p>Одиночки, организованная преступность, APT-группы, кибернаёмники, государственные структуры.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">124 · Модуль V · Атаки</div>
+<h2>Вредоносное ПО: обзор</h2>
+<p class="lead">Malware — зонтичный термин. Каждый тип имеет свою тактику, цель и способ распространения.</p>
+<div class="grid g4">
+<div class="card"><h3>Вирус</h3><p>Встраивается в файлы и распространяется вместе с ними</p></div>
+<div class="card"><h3>Червь</h3><p>Распространяется сам по сети без участия человека</p></div>
+<div class="card"><h3>Троян</h3><p>Маскируется под полезное приложение</p></div>
+<div class="card"><h3>Ransomware</h3><p>Шифрует данные и требует выкуп</p></div>
+<div class="card"><h3>Spyware</h3><p>Следит и крадёт информацию</p></div>
+<div class="card"><h3>Rootkit</h3><p>Прячется в системе, скрывая присутствие атакующего</p></div>
+<div class="card"><h3>Botnet</h3><p>Управляемая армия заражённых устройств</p></div>
+<div class="card"><h3>Miner</h3><p>Использует ваши ресурсы для майнинга</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">125 · Модуль V · Атаки</div>
+<h2>Вирусы</h2>
+<p class="lead">Код, встроенный в другой файл. Активируется при запуске носителя или приложения.</p>
+<ul class="pts">
+<li>Типы: файловые, загрузочные, макровирусы, полиморфные, стелс-вирусы, сетевые черви.</li>
+<li>Распространяются через флешки, вложения, пиратский софт, торренты, вредоносную рекламу.</li>
+<li>Могут менять код, удалять данные, открывать бэкдоры, шифровать файлы.</li>
+<li>Обнаруживаются сигнатурными и поведенческими методами.</li>
+<li>Классика жанра — вирусы, которые мутируют при каждой репликации, чтобы обойти сигнатуры.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">126 · Модуль V · Атаки</div>
+<h2>Черви</h2>
+<p class="lead">Самокопирующийся код, которому не нужен носитель. Использует сеть как среду обитания.</p>
+<div class="grid g3">
+<div class="card"><h3>Примеры</h3><p>Morris (1988), Code Red (2001), Slammer (2003), WannaCry (2017), NotPetya (2017).</p></div>
+<div class="card"><h3>Механизм</h3><p>Сканирование сети → эксплуатация уязвимости → заражение → повторение.</p></div>
+<div class="card"><h3>Опасность</h3><p>Мгновенный охват. WannaCry заразил более двухсот тысяч систем за сутки.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">127 · Модуль V · Атаки</div>
+<h2>Трояны</h2>
+<p class="lead">Программа, которая выглядит полезной, но делает что-то ещё втайне от пользователя.</p>
+<ul class="pts">
+<li>RAT (Remote Access Trojan) — полный удалённый контроль над машиной.</li>
+<li>Banking trojan — перехватывает банковские сессии и подменяет реквизиты.</li>
+<li>Dropper — доставляет другую малварь на систему.</li>
+<li>Backdoor — постоянный скрытый доступ для атакующего.</li>
+<li>Часто приходят через пиратские программы, «кряки», фейковые обновления.</li>
+<li>Социальная инженерия часто предшествует трояну: жертву уговаривают запустить файл.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">128 · Модуль V · Атаки</div>
+<h2>Ransomware</h2>
+<p class="lead">Шифрует данные и требует выкуп. Одна из самых разрушительных угроз современности.</p>
+<div class="grid g3">
+<div class="card"><h3>Двойное вымогательство</h3><p>Сначала крадут данные, потом шифруют. Угрожают публикацией, если жертва не заплатит.</p></div>
+<div class="card"><h3>Тройное</h3><p>Плюс DDoS-атака и звонки клиентам компании, чтобы усилить давление.</p></div>
+<div class="card"><h3>Цели</h3><p>Больницы, школы, муниципалитеты, промышленность — те, кто не может позволить простой.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">129 · Модуль V · Атаки</div>
+<h2>Ransomware-as-a-Service</h2>
+<p class="lead">Киберпреступность стала экономикой с разделением труда.</p>
+<div class="grid g4">
+<div class="card"><h3>Разработчики</h3><p>Пишут вредонос и продают доступ к нему по подписке.</p></div>
+<div class="card"><h3>Аффилиаты</h3><p>Проводят атаки и получают процент от выкупа.</p></div>
+<div class="card"><h3>Initial Access Brokers</h3><p>Продают доступ к скомпрометированным сетям.</p></div>
+<div class="card"><h3>Переговорщики</h3><p>Помогают жертве «правильно» заплатить — за свою долю.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Есть даже службы «поддержки» и «гарантии»: заплатите дважды — и мы удалим ваши данные из публикации.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">130 · Модуль V · Атаки</div>
+<h2>Шпионское ПО</h2>
+<ul class="pts">
+<li>Keylogger — записывает нажатия клавиш и передаёт атакующему.</li>
+<li>Screen capture — периодические скриншоты экрана.</li>
+<li>Credential stealer — собирает пароли из браузеров, мессенджеров, приложений.</li>
+<li>Stalkerware — коммерческий шпионаж за близкими. Формально легальный, но неэтичный.</li>
+<li>Pegasus и аналогичные инструменты уровня государств заражают даже «выключенный» телефон.</li>
+<li>Обнаружить сложно: часто маскируется под системные процессы и не шумит.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">131 · Модуль V · Атаки</div>
+<h2>Rootkit</h2>
+<p class="lead">Набор инструментов, прячущий присутствие атакующего в системе.</p>
+<div class="grid g3">
+<div class="card"><h3>User-mode</h3><p>Перехватывает API-вызовы, прячет файлы, процессы и сетевые соединения.</p></div>
+<div class="card"><h3>Kernel-mode</h3><p>Модифицирует ядро. Крайне сложно обнаружить изнутри самой системы.</p></div>
+<div class="card"><h3>Bootkit и firmware</h3><p>Живёт в загрузчике или прошивке. Переживает переустановку операционной системы.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">132 · Модуль V · Атаки</div>
+<h2>Ботнет</h2>
+<p class="lead">Сеть заражённых устройств, управляемая из командного центра (C2).</p>
+<ul class="pts">
+<li>Mirai (2016) собрал армию из IoT-устройств с заводскими паролями и обрушил крупные сервисы.</li>
+<li>Используется для DDoS, рассылки спама, майнинга, прокси-сетей, клик-фрода.</li>
+<li>Архитектуры: централизованные, P2P, гибридные — сложнее уничтожить.</li>
+<li>Ваш «умный» чайник или камера видеонаблюдения может быть частью ботнета прямо сейчас.</li>
+<li>Известны случаи продажи доступа к ботнетам как услуги — с гарантией мощности.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">133 · Модуль V · Атаки</div>
+<h2>Криптомайнеры</h2>
+<p class="lead">Тихо используют ваши ресурсы для майнинга криптовалюты.</p>
+<div class="grid g3">
+<div class="card"><h3>Признаки</h3><p>Перегрев, шум кулеров, тормоза, резкий рост счёта за электричество.</p></div>
+<div class="card"><h3>Распространение</h3><p>Через уязвимые сервисы (Redis, Docker, Kubernetes), фишинг, пиратский софт.</p></div>
+<div class="card"><h3>Защита</h3><p>Закрыть неиспользуемые порты, мониторинг CPU и GPU, allowlist процессов.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">134 · Модуль V · Атаки</div>
+<h2>Бесфайловая малварь</h2>
+<p class="lead">Новое поколение: ничего не записывается на диск. Живёт в памяти и умирает при перезагрузке — или закрепляется через реестр и задачи.</p>
+<ul class="pts">
+<li>Использует PowerShell, WMI, .NET, макросы Office, LOLBins (легитимные системные утилиты).</li>
+<li>Не оставляет файлов для сканирования антивирусом.</li>
+<li>Обнаруживается только поведенческими методами и мониторингом памяти.</li>
+<li>Классические примеры: атаки через regsvr32, mshta, rundll32.</li>
+<li>Требует включённого журналирования командной строки и продвинутых EDR-решений.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">135 · Модуль V · Атаки</div>
+<h2>Фишинг</h2>
+<p class="lead">Самый массовый и самый эффективный вектор. Не нужно взламывать систему — достаточно обмануть человека.</p>
+<div class="grid g3">
+<div class="card"><h3>Email</h3><p>Письма от «банка», «руководителя», «партнёра», «службы доставки».</p></div>
+<div class="card"><h3>Сайты-клоны</h3><p>Точная копия страницы входа для сбора логинов и паролей.</p></div>
+<div class="card"><h3>Вложения</h3><p>PDF, DOCX с макросами, HTML-контрабанда, файлы с двойным расширением.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">136 · Модуль V · Атаки</div>
+<h2>Целевой фишинг (spear phishing)</h2>
+<p class="lead">Атакующий изучает жертву и пишет письмо, которое практически невозможно заподозрить.</p>
+<ul class="pts">
+<li>Использует реальные имена коллег, названия проектов, стиль общения.</li>
+<li>Часто приходит со скомпрометированного ящика реального партнёра или коллеги.</li>
+<li>Может длиться неделями: сначала безобидное письмо, потом просьба, потом ссылка.</li>
+<li>Успешность кратно выше массового фишинга — иногда десятки процентов.</li>
+<li>Часто совмещается с вишингом: письмо, затем звонок «для подтверждения».</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">137 · Модуль V · Атаки</div>
+<h2>Вишинг и смишинг</h2>
+<div class="split">
+<div><h3 class="acc">Вишинг (vishing)</h3><p>Голосовой фишинг. Звонок от «службы безопасности банка», «полиции», «налоговой». Часто с подменой номера и использованием скриптов, вызывающих панику.</p></div>
+<div><h3 class="acc">Смишинг (smishing)</h3><p>SMS-фишинг. Ссылка на «доставку посылки», «выплату», «штраф». Работает на телефоне, где нет корпоративной защиты и внимания администратора.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">138 · Модуль V · Атаки</div>
+<h2>BEC — Business Email Compromise</h2>
+<p class="lead">Компрометация деловой переписки. Один из самых дорогих видов мошенничества в мире.</p>
+<div class="grid g3">
+<div class="card"><h3>Схема</h3><p>Атакующий выдаёт себя за директора и просит бухгалтерию срочно перевести деньги на «новые реквизиты».</p></div>
+<div class="card"><h3>Суммы</h3><p>От десятков тысяч до миллионов долларов за один перевод. Часто — без возврата.</p></div>
+<div class="card"><h3>Защита</h3><p>Процедура двойного подтверждения, MFA, DMARC, обучение, кодовые слова в компании.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">139 · Модуль V · Атаки</div>
+<h2>Претекстинг</h2>
+<p class="lead">Атакующий придумывает легенду, чтобы получить информацию или доступ.</p>
+<ul class="pts">
+<li>«Я из IT, мне нужно проверить ваш компьютер — назовите пароль».</li>
+<li>«Я из аудита, пришлите список сотрудников и их должности».</li>
+<li>«Курьер, назовите код из SMS для доставки» — классический угон аккаунта.</li>
+<li>Работает на авторитете, срочности и желании помочь.</li>
+<li>Хороший претекст всегда опирается на реальный контекст компании и человека.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">140 · Модуль V · Атаки</div>
+<h2>Приманка (baiting)</h2>
+<p class="lead">Оставить «вкусный» объект, чтобы жертва сама его подобрала.</p>
+<div class="grid g3">
+<div class="card"><h3>Физическая</h3><p>USB-флешка с надписью «Зарплаты 2025» на парковке. Классика, которая работает до сих пор.</p></div>
+<div class="card"><h3>Цифровая</h3><p>Бесплатная копия дорогого софта, фильма или игры с малварью внутри.</p></div>
+<div class="card"><h3>Почему работает</h3><p>Любопытство — одно из самых сильных человеческих чувств, сильнее страха.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">141 · Модуль V · Атаки</div>
+<h2>Tailgating</h2>
+<p class="lead">Проход в защищённое помещение «за спиной» уполномоченного сотрудника.</p>
+<ul class="pts">
+<li>Классика: человек с коробками в руках, которому «неудобно открыть дверь».</li>
+<li>Работает даже в самых защищённых объектах, включая центры обработки данных.</li>
+<li>Защита: турникеты, обучение (не держать дверь), ротация пропусков, охрана.</li>
+<li>Физическая безопасность — часть кибербезопасности. Злоумышленник с физическим доступом может сделать почти всё.</li>
+<li>Часто совмещается с претекстингом: легенда плюс уверенное поведение.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">142 · Модуль V · Атаки</div>
+<h2>SQL-инъекция</h2>
+<p class="lead">Внедрение SQL-кода через пользовательский ввод. Одна из старейших, но до сих пор в топе OWASP.</p>
+<ul class="pts">
+<li>Пример: запрос собирается конкатенацией строки — <span class="mono">SELECT * FROM users WHERE name = 'X'</span>.</li>
+<li>Ввод <span class="mono">' OR '1'='1</span> выводит все записи, включая администраторов.</li>
+<li>Может привести к полной утечке базы данных, изменению данных, выполнению команд на сервере.</li>
+<li>Защита: параметризованные запросы, ORM, валидация ввода, минимальные права учётной записи БД.</li>
+<li>Даже одна такая уязвимость в интернет-сервисе может стоить компании всего.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">143 · Модуль V · Атаки</div>
+<h2>XSS — межсайтовый скриптинг</h2>
+<p class="lead">Внедрение скрипта на страницу, который выполнится в браузере другой жертвы.</p>
+<div class="grid g3">
+<div class="card"><h3>Reflected</h3><p>Скрипт в параметре URL, срабатывает сразу после перехода.</p></div>
+<div class="card"><h3>Stored</h3><p>Скрипт сохранён в базе и показывается всем посетителям. Опаснее всего.</p></div>
+<div class="card"><h3>DOM-based</h3><p>Выполняется на клиенте без обращения к серверу — только через манипуляции с DOM.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Защита: экранирование вывода, Content Security Policy, HTTPOnly cookies, фреймворки с автокодированием.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">144 · Модуль V · Атаки</div>
+<h2>CSRF — подделка межсайтовых запросов</h2>
+<p class="lead">Заставить браузер жертвы выполнить действие на сайте, где она уже авторизована.</p>
+<ul class="pts">
+<li>Пример: скрытая форма, которая переводит деньги с вашего счёта, пока вы читаете другой сайт.</li>
+<li>Работает, потому что браузер автоматически прикладывает cookie к запросу.</li>
+<li>Защита: CSRF-токены, SameSite cookies, проверка заголовков Origin и Referer.</li>
+<li>С введением SameSite по умолчанию в современных браузерах стал реже, но не исчез.</li>
+<li>Особенно опасен для административных панелей и финансовых операций.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">145 · Модуль V · Атаки</div>
+<h2>SSRF — подделка серверных запросов</h2>
+<p class="lead">Заставить сервер сделать запрос туда, куда он не должен.</p>
+<div class="grid g3">
+<div class="card"><h3>Зачем</h3><p>Доступ к внутренним сервисам, облачным метаданным, обход файрволов.</p></div>
+<div class="card"><h3>Классика</h3><p>Запрос к 169.254.169.254 — метаданные облака. Оттуда — временные креды и токены.</p></div>
+<div class="card"><h3>Защита</h3><p>Allowlist доменов, блокировка внутренних IP, IMDSv2, минимальные права сервисного аккаунта.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">146 · Модуль V · Атаки</div>
+<h2>RCE — удалённое выполнение кода</h2>
+<p class="lead">То, чего боятся все. Возможность выполнить произвольный код на сервере.</p>
+<ul class="pts">
+<li>Высший уровень критичности — почти всегда CVSS 9.8–10.0.</li>
+<li>Возникает из десериализации, уязвимостей в библиотеках, загрузки файлов, SSTI.</li>
+<li>Log4Shell (2021) — пример RCE в популярнейшей библиотеке логирования Java.</li>
+<li>После RCE атакующий получает полный контроль над процессом и часто над хостом.</li>
+<li>Обнаруживается через EDR, мониторинг подозрительных дочерних процессов, сетевой анализ.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">147 · Модуль V · Атаки</div>
+<h2>Path traversal</h2>
+<p class="lead">Выход за пределы разрешённой директории через <span class="mono">../</span> в пути к файлу.</p>
+<div class="grid g3">
+<div class="card"><h3>Пример</h3><p><span class="mono">?file=../../../../etc/passwd</span> — и сервер отдаёт системный файл.</p></div>
+<div class="card"><h3>Что можно получить</h3><p>Пароли, конфиги с кредами, приватные ключи, исходный код приложений.</p></div>
+<div class="card"><h3>Защита</h3><p>Не принимать имена файлов от пользователя, канонизировать путь, allowlist, chroot.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">148 · Модуль V · Атаки</div>
+<h2>Небезопасная десериализация</h2>
+<p class="lead">Превращение байтов в объект. Если данные контролирует атакующий — можно создать любой объект и выполнить код.</p>
+<ul class="pts">
+<li>Java: gadget chains через commons-collections, Spring, Groovy.</li>
+<li>Python: pickle — никогда не десериализуйте данные от пользователя.</li>
+<li>PHP: unserialize с magic-методами вроде __wakeup.</li>
+<li>.NET: BinaryFormatter и подобные механизмы, давно признанные опасными.</li>
+<li>Защита: использовать безопасные форматы (JSON), проверять схему, подписывать данные.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">149 · Модуль V · Атаки</div>
+<h2>Небезопасная загрузка файлов</h2>
+<p class="lead">Казалось бы, что может пойти не так? Очень многое.</p>
+<div class="grid g3">
+<div class="card"><h3>Web shell</h3><p>Загрузить .php-файл и получить полноценное управление сервером.</p></div>
+<div class="card"><h3>Обход расширений</h3><p>shell.php.jpg, shell.pHp, shell.php%00, двойное расширение, null-byte.</p></div>
+<div class="card"><h3>Защита</h3><p>Проверять содержимое, а не только расширение. Хранить вне веб-корня. Переименовывать. Ограничивать размер.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">150 · Модуль V · Атаки</div>
+<h2>IDOR и сломанный контроль доступа</h2>
+<p class="lead">Первое место в OWASP Top 10 2021. Простое изменение ID в запросе даёт доступ к чужим данным.</p>
+<ul class="pts">
+<li><span class="mono">GET /api/orders/1234</span> → <span class="mono">GET /api/orders/1235</span> — и вы видите чужой заказ.</li>
+<li>Проблема не в отсутствии аутентификации, а в отсутствии авторизации.</li>
+<li>Обратная сторона: скрытые админские функции, доступные по прямому URL.</li>
+<li>Защита: проверять права на каждом объекте, использовать непредсказуемые ID (UUID), логировать доступ.</li>
+<li>Часто встречается в мобильных API и микросервисах, где авторизацию «забывают».</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">151 · Модуль V · Атаки</div>
+<h2>Атаки на аутентификацию</h2>
+<div class="grid g3">
+<div class="card"><h3>Brute force</h3><p>Перебор паролей. Защита: rate limit, lockout, CAPTCHA.</p></div>
+<div class="card"><h3>Credential stuffing</h3><p>Использование утёкших пар логин-пароль с других сайтов.</p></div>
+<div class="card"><h3>Password spraying</h3><p>Один популярный пароль по многим учёткам. Обходит блокировку.</p></div>
+<div class="card"><h3>Session fixation</h3><p>Навязать жертве заранее известный идентификатор сессии.</p></div>
+<div class="card"><h3>JWT-атаки</h3><p>Алгоритм «none», слабый секрет, подмена kid, путаница алгоритмов.</p></div>
+<div class="card"><h3>MFA fatigue</h3><p>Заваливать push-запросами, пока жертва не подтвердит вход.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">152 · Модуль V · Атаки</div>
+<h2>Brute force и credential stuffing</h2>
+<ul class="pts">
+<li>Словари утёкших паролей: RockYou (четырнадцать миллионов), Collection #1 (семьсот семьдесят миллионов).</li>
+<li>Инструменты: Hydra, Medusa, Burp Intruder, ffuf, CrackMapExec.</li>
+<li>Credential stuffing использует тот факт, что люди повторяют пароли на разных сайтах.</li>
+<li>Защита: MFA, проверка на утечки через HaveIBeenPwned, уникальные пароли, менеджеры паролей.</li>
+<li>Обязательно: мониторинг аномальных входов по геолокации и устройству.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">153 · Модуль V · Атаки</div>
+<h2>Pass-the-hash и Kerberos-атаки</h2>
+<p class="lead">В Windows-сетях атакующие часто не ломают пароли — они крадут хеши и токены.</p>
+<div class="grid g3">
+<div class="card"><h3>Pass-the-hash</h3><p>Использование NTLM-хеша без знания самого пароля.</p></div>
+<div class="card"><h3>Kerberoasting</h3><p>Запрос service ticket и офлайн-подбор пароля сервисного аккаунта.</p></div>
+<div class="card"><h3>Golden Ticket</h3><p>Подделка KRBTGT — полный контроль над доменом на годы.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">154 · Модуль V · Атаки</div>
+<h2>Lateral movement</h2>
+<p class="lead">Перемещение по сети от машины к машине в поисках ценных активов.</p>
+<ul class="pts">
+<li>Инструменты: PsExec, WMI, RDP, SMB, SSH, WinRM, BloodHound для разведки.</li>
+<li>Использование легитимных административных протоколов — «жизнь за счёт земли».</li>
+<li>Цель — добраться до контроллера домена, базы данных, финансовых систем.</li>
+<li>Защита: сегментация, LAPS, tiered administration, мониторинг аномальных подключений.</li>
+<li>Каждое новое подключение — потенциальный сигнал: смена привычного паттерна видна в логах.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">155 · Модуль V · Атаки</div>
+<h2>APT — Advanced Persistent Threat</h2>
+<div class="grid g3">
+<div class="card"><h3>Advanced</h3><p>Используют zero-day, собственные инструменты, обходят защиту месяцами.</p></div>
+<div class="card"><h3>Persistent</h3><p>Живут в сети месяцами и годами, не торопятся и не шумят.</p></div>
+<div class="card"><h3>Threat</h3><p>Организованные группы, обычно связанные с государствами и их интересами.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Известные группы: APT28 (Fancy Bear), APT29 (Cozy Bear), Lazarus, Sandworm, Equation Group, DarkSide.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">156 · Модуль V · Атаки</div>
+<h2>Атаки: итоги</h2>
+<p class="bigquote">Атакующий ищет не самую защищённую систему. Он ищет <span class="grad">самую слабую</span>.</p>
+<p class="lead" style="margin-top:1.2rem">Ваша безопасность определяется не средним уровнем защиты, а самым слабым звеном. Именно поэтому фишинг работает лучше эксплойтов, а забытый тестовый сервер опаснее защищённого продакшена.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ VI ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">157 · Модуль VI · Защита</div>
+<h2>Управление уязвимостями</h2>
+<p class="lead">Непрерывный процесс выявления, оценки и устранения слабых мест.</p>
+<div class="grid g4">
+<div class="card"><div class="big">1</div><p>Инвентаризация: что у нас вообще есть</p></div>
+<div class="card"><div class="big">2</div><p>Сканирование: где слабые места</p></div>
+<div class="card"><div class="big">3</div><p>Приоритизация: что чинить первым</p></div>
+<div class="card"><div class="big">4</div><p>Ремедиация: закрыть и проверить</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">CVSS даёт базовую оценку, но приоритет должен зависеть от эксплуатируемости в дикой природе (EPSS, CISA KEV) и критичности актива.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">158 · Модуль VI · Защита</div>
+<h2>Сканеры уязвимостей</h2>
+<div class="grid g3">
+<div class="card"><h3>Сетевые</h3><p>Nessus, OpenVAS, Qualys. Ищут уязвимости сервисов и конфигураций.</p></div>
+<div class="card"><h3>Веб</h3><p>Burp Suite, Acunetix, OWASP ZAP. Проверяют веб-приложения и API.</p></div>
+<div class="card"><h3>SCA</h3><p>Snyk, Dependabot, Trivy. Ищут уязвимые зависимости в коде.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">159 · Модуль VI · Защита</div>
+<h2>Пентест</h2>
+<p class="lead">Этичный взлом. Легальная имитация атаки для оценки реальной защищённости.</p>
+<ul class="pts">
+<li>Методологии: PTES, OWASP Testing Guide, MITRE ATT&CK, NIST SP 800-115.</li>
+<li>Виды: black-box (без знания), white-box (полный доступ), grey-box (частичный).</li>
+<li>Отчёт: находки, доказательства, оценка риска, рекомендации по устранению.</li>
+<li>Обязательно: письменное разрешение и чёткие границы работ.</li>
+<li>Отличается от реальной атаки тем, что ведётся в согласованных рамках и по закону.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">160 · Модуль VI · Защита</div>
+<h2>Bug bounty</h2>
+<p class="lead">Краудсорсинг безопасности. Тысячи исследователей ищут уязвимости за вознаграждение.</p>
+<div class="grid g3">
+<div class="card"><h3>Платформы</h3><p>HackerOne, Bugcrowd, YesWeHack, Standoff 365, BI.ZONE Bug Bounty.</p></div>
+<div class="card"><h3>Плюсы</h3><p>Масштаб, свежий взгляд, реальная мотивация исследователей.</p></div>
+<div class="card"><h3>Минусы</h3><p>Дубликаты, риск утечки до фикса, нужна программа и правила.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">161 · Модуль VI · Защита</div>
+<h2>Red, Blue, Purple</h2>
+<div class="grid g3">
+<div class="card"><h3>Red Team</h3><p>Атакует. Имитирует реальных противников. Проверяет людей, процессы и технологии.</p></div>
+<div class="card"><h3>Blue Team</h3><p>Защищает. Мониторит, обнаруживает, реагирует, восстанавливает.</p></div>
+<div class="card"><h3>Purple Team</h3><p>Связка. Помогает Red и Blue работать вместе и улучшать защиту итеративно.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">162 · Модуль VI · Защита</div>
+<h2>Управление патчами</h2>
+<p class="lead">Скучно, дорого и при этом — самая эффективная мера защиты.</p>
+<ul class="pts">
+<li>Календарь патчей: регулярный цикл, а не «когда вспомним».</li>
+<li>Приоритет: критичные CVE с эксплойтами в дикой природе — вне очереди.</li>
+<li>Тестовый контур → продакшн. Но не затягивайте: задержка — это окно для атаки.</li>
+<li>WannaCry эксплуатировал уязвимость, патч для которой вышел за два месяца до атаки.</li>
+<li>Отдельная проблема — прошивки и firmware: обновлять их сложнее, а пропускать нельзя.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">163 · Модуль VI · Защита</div>
+<h2>Ужесточение конфигурации (hardening)</h2>
+<p class="lead">Убрать всё лишнее. Каждый лишний сервис — потенциальная точка входа.</p>
+<div class="grid g3">
+<div class="card"><h3>Что убрать</h3><p>Лишние порты, дефолтные пароли, примеры приложений, ненужные учётные записи.</p></div>
+<div class="card"><h3>Что включить</h3><p>Файрвол, SELinux или AppArmor, аудит, шифрование диска, secure boot.</p></div>
+<div class="card"><h3>Стандарты</h3><p>CIS Benchmarks, STIG, ГОСТ, внутренние baseline-конфигурации.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">164 · Модуль VI · Защита</div>
+<h2>CIS Benchmarks</h2>
+<p class="lead">Более ста проверенных конфигураций для операционных систем, облаков, браузеров, СУБД и контейнеров.</p>
+<ul class="pts">
+<li>Конкретные, измеримые рекомендации по каждой настройке.</li>
+<li>Два уровня: Level 1 (базовый) и Level 2 (усиленный).</li>
+<li>Реализуются через Ansible, Terraform, Group Policy, сканеры конфигураций.</li>
+<li>Отличная отправная точка для инфраструктуры как кода.</li>
+<li>Обновляются по мере выхода новых версий продуктов и появления угроз.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">165 · Модуль VI · Защита</div>
+<h2>IAM — управление идентификацией</h2>
+<p class="lead">Кто вы и что вам можно. Самая важная и самая сложная область современной безопасности.</p>
+<div class="grid g3">
+<div class="card"><h3>Аутентификация</h3><p>Подтверждение личности: пароль, ключ, биометрия, сертификат.</p></div>
+<div class="card"><h3>Авторизация</h3><p>Определение прав: RBAC, ABAC, ReBAC, политики как код.</p></div>
+<div class="card"><h3>Жизненный цикл</h3><p>Создание, изменение, отзыв доступов. Уволенный сотрудник с активной учёткой — классика утечек.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">166 · Модуль VI · Защита</div>
+<h2>MFA</h2>
+<p class="lead">Многофакторная аутентификация. Что-то, что вы знаете, плюс что-то, что у вас есть, плюс что-то, чем вы являетесь.</p>
+<div class="grid g3">
+<div class="card"><h3>SMS</h3><p>Лучше, чем ничего. Уязвим к SIM-swap и перехвату. Не рекомендуется для критичных систем.</p></div>
+<div class="card"><h3>TOTP</h3><p>Приложения-аутентификаторы. Хорошо, но продвинутые фишинг-прокси обходят и его.</p></div>
+<div class="card"><h3>FIDO2 и WebAuthn</h3><p>Аппаратные ключи. Привязка к домену — фишинг не работает. Золотой стандарт.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">167 · Модуль VI · Защита</div>
+<h2>Passwordless</h2>
+<p class="lead">Отказ от паролей вообще. Passkeys на базе WebAuthn синхронизируются между устройствами.</p>
+<ul class="pts">
+<li>Убирают целый класс проблем: утечки, переиспользование, слабые пароли.</li>
+<li>Защищены от фишинга криптографически, а не «надеждой на бдительность».</li>
+<li>Google, Apple, Microsoft, GitHub, Amazon уже поддерживают.</li>
+<li>Переход идёт, но старые системы будут с паролями ещё долго.</li>
+<li>Для критичных сервисов — постепенная миграция, а не «всё сразу».</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">168 · Модуль VI · Защита</div>
+<h2>PAM — управление привилегированным доступом</h2>
+<p class="lead">Как управлять доступом администраторов, чтобы не раздать всем root.</p>
+<div class="grid g3">
+<div class="card"><h3>Хранилище секретов</h3><p>Пароли хранятся в сейфе и выдаются на сессию, а не «навсегда».</p></div>
+<div class="card"><h3>Запись сессий</h3><p>Все действия администратора записываются на видео — для аудита и расследований.</p></div>
+<div class="card"><h3>JIT-доступ</h3><p>Права выдаются на время выполнения задачи, потом автоматически отзываются.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">169 · Модуль VI · Защита</div>
+<h2>SIEM</h2>
+<p class="lead">Security Information and Event Management. Централизация логов и корреляция событий.</p>
+<ul class="pts">
+<li>Собирает данные со всей инфраструктуры: серверы, сеть, приложения, облако.</li>
+<li>Ищет паттерны: аномальные входы, эскалация привилегий, сканирование, экспорт данных.</li>
+<li>Правила корреляции (use cases) — сердце любой SIEM-системы.</li>
+<li>Решения: Splunk, QRadar, Elastic, Wazuh, MaxPatrol.</li>
+<li>Проблема: слишком много алертов. Отсюда развитие SOAR и ML-приоритизации.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">170 · Модуль VI · Защита</div>
+<h2>SOAR</h2>
+<p class="lead">Security Orchestration, Automation and Response. Автоматизация рутины SOC.</p>
+<div class="grid g3">
+<div class="card"><h3>Playbooks</h3><p>Сценарии: «если фишинг — изолировать почту, проверить ссылку, уведомить пользователя».</p></div>
+<div class="card"><h3>Автоматизация</h3><p>Изоляция хоста, блокировка IP, сброс пароля — без участия человека.</p></div>
+<div class="card"><h3>Ценность</h3><p>Сокращает MTTR и снижает выгорание аналитиков первого уровня.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">171 · Модуль VI · Защита</div>
+<h2>EDR и XDR</h2>
+<div class="split">
+<div><h3 class="acc">EDR</h3><p>Endpoint Detection and Response. Агент на устройстве: телеметрия процессов, файлов, сети. Позволяет увидеть цепочку атаки и откатить её.</p></div>
+<div><h3 class="acc">XDR</h3><p>Extended Detection and Response. Объединяет EDR, сеть, почту, облако и идентичность в единую картину.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">172 · Модуль VI · Защита</div>
+<h2>Эволюция антивирусов</h2>
+<div class="timeline">
+<div class="tl-row"><b>1980-е</b><span>Сигнатуры — поиск известных вирусов по базе</span></div>
+<div class="tl-row"><b>1990-е</b><span>Эвристика — предположение о новом, похожем на известное</span></div>
+<div class="tl-row"><b>2000-е</b><span>Песочницы — запуск файла в изолированной среде</span></div>
+<div class="tl-row"><b>2010-е</b><span>Поведенческий анализ и машинное обучение</span></div>
+<div class="tl-row"><b>2020-е</b><span>EDR и XDR, облачная аналитика, threat hunting</span></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">173 · Модуль VI · Защита</div>
+<h2>DLP</h2>
+<p class="lead">Data Loss Prevention. Предотвращение утечек данных.</p>
+<div class="grid g3">
+<div class="card"><h3>Каналы</h3><p>Email, USB, веб, принтеры, облака, мессенджеры, буфер обмена.</p></div>
+<div class="card"><h3>Методы</h3><p>По сигнатурам (номера карт), по контексту, по машинному обучению.</p></div>
+<div class="card"><h3>Проблема</h3><p>Ложные срабатывания. Может мешать работе. Нужна тонкая настройка и обучение.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">174 · Модуль VI · Защита</div>
+<h2>Шифрование данных</h2>
+<ul class="pts">
+<li>At rest: BitLocker, LUKS, TDE для баз данных, шифрование объектов в S3.</li>
+<li>In transit: TLS, SSH, IPsec, шифрование внутри сервисной сетки.</li>
+<li>In use: конфиденциальные вычисления, TEE, гомоморфное шифрование (пока экспериментально).</li>
+<li>Управление ключами — самое сложное: KMS, HSM, ротация, разделение обязанностей.</li>
+<li>Без управления ключами шифрование бесполезно: ключ, лежащий рядом с данными, ничего не защищает.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">175 · Модуль VI · Защита</div>
+<h2>Бэкапы и правило 3-2-1</h2>
+<div class="grid g3">
+<div class="card"><div class="big">3</div><p>Три копии данных</p></div>
+<div class="card"><div class="big">2</div><p>На двух разных носителях</p></div>
+<div class="card"><div class="big">1</div><p>Одна копия — вне основной площадки</p></div>
+</div>
+<p class="lead" style="margin-top:1.2rem">Современное расширение — <b>3-2-1-1-0</b>: плюс одна копия офлайн (immutable), и ноль ошибок при проверке восстановления. Бэкап, который не проверяли, — это не бэкап.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">176 · Модуль VI · Защита</div>
+<h2>Восстановление после ransomware</h2>
+<ul class="pts">
+<li>Изолировать заражённые системы немедленно, до выяснения масштаба.</li>
+<li>Не платить: оплата не гарантирует расшифровку и финансирует преступность.</li>
+<li>Восстанавливаться из проверенных офлайн-бэкапов, а не из «горячей» реплики.</li>
+<li>Проверить, не остался ли атакующий в сети до восстановления.</li>
+<li>Уведомить регуляторов, партнёров и клиентов в сроки, установленные законом.</li>
+<li>Разобрать инцидент и закрыть вектор проникновения — иначе всё повторится.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">177 · Модуль VI · Защита</div>
+<h2>Secure SDLC</h2>
+<p class="lead">Безопасность, встроенная в процесс разработки, а не прикрученная в самом конце.</p>
+<div class="grid g4">
+<div class="card"><div class="big">1</div><p>Требования безопасности</p></div>
+<div class="card"><div class="big">2</div><p>Проектирование и модель угроз</p></div>
+<div class="card"><div class="big">3</div><p>Разработка по стандартам</p></div>
+<div class="card"><div class="big">4</div><p>Тестирование на уязвимости</p></div>
+<div class="card"><div class="big">5</div><p>Релиз с проверкой</p></div>
+<div class="card"><div class="big">6</div><p>Эксплуатация и мониторинг</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">178 · Модуль VI · Защита</div>
+<h2>DevSecOps</h2>
+<p class="lead">Слияние разработки, безопасности и эксплуатации. Безопасность как код и как автоматизация.</p>
+<ul class="pts">
+<li>Security as Code: политики в репозитории, проверяемые автоматически.</li>
+<li>Shift left: искать проблемы как можно раньше, где они дешевле.</li>
+<li>CI/CD-пайплайн включает сканирование на каждом этапе.</li>
+<li>Культура: безопасность — ответственность всей команды, а не «отдела безопасности».</li>
+<li>Практика: security champions в каждой продуктовой команде.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">179 · Модуль VI · Защита</div>
+<h2>SAST, DAST, SCA</h2>
+<div class="grid g3">
+<div class="card"><h3>SAST</h3><p>Static Analysis. Анализ исходного кода без запуска. Находит паттерны уязвимостей. Ложные срабатывания — норма.</p></div>
+<div class="card"><h3>DAST</h3><p>Dynamic Analysis. Тестирование работающего приложения снаружи. Находит то, что видит атакующий.</p></div>
+<div class="card"><h3>SCA</h3><p>Software Composition Analysis. Проверка зависимостей на известные уязвимости и лицензии.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">180 · Модуль VI · Защита</div>
+<h2>Безопасность контейнеров</h2>
+<ul class="pts">
+<li>Образы: минимальный базовый образ, сканирование (Trivy, Clair), подписывание (cosign).</li>
+<li>Runtime: не запускать от root, read-only файловая система, seccomp, AppArmor.</li>
+<li>Реестр: приватный, с аутентификацией и автоматическим сканированием.</li>
+<li>Оркестратор: сетевые политики, RBAC, управление секретами.</li>
+<li>Главный принцип: контейнер — не граница безопасности. Изоляция слабее, чем у виртуальной машины.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">181 · Модуль VI · Защита</div>
+<h2>Безопасность Kubernetes</h2>
+<div class="grid g3">
+<div class="card"><h3>RBAC</h3><p>Кто что может в кластере. Минимальные права для сервисных аккаунтов.</p></div>
+<div class="card"><h3>Network Policies</h3><p>Разрешить только нужные соединения между pod'ами.</p></div>
+<div class="card"><h3>Pod Security</h3><p>Стандарты restricted, baseline, privileged. Не давать CAP_SYS_ADMIN.</p></div>
+<div class="card"><h3>Secrets</h3><p>Не хранить в манифестах. Vault, External Secrets, Sealed Secrets.</p></div>
+<div class="card"><h3>Admission</h3><p>OPA Gatekeeper, Kyverno — политики на входе в кластер.</p></div>
+<div class="card"><h3>Runtime</h3><p>Falco, Tetragon — обнаружение аномалий в работающих контейнерах.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">182 · Модуль VI · Защита</div>
+<h2>Защита: итоги</h2>
+<p class="bigquote">Защита — это не набор продуктов. Это <span class="grad">процесс</span>, люди и культура, работающие непрерывно.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ VII ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">183 · Модуль VII · Направления</div>
+<h2>Карта профессий</h2>
+<p class="lead">Кибербезопасность — не одна профессия, а двадцать с лишним разных. Вот основные направления.</p>
+<div class="grid g4">
+<div class="card"><h3>SOC</h3><p>Мониторинг и реагирование</p></div>
+<div class="card"><h3>Offensive</h3><p>Пентест и Red Team</p></div>
+<div class="card"><h3>AppSec</h3><p>Безопасность приложений</p></div>
+<div class="card"><h3>Cloud</h3><p>Безопасность облака</p></div>
+<div class="card"><h3>GRC</h3><p>Риски и комплаенс</p></div>
+<div class="card"><h3>Forensics</h3><p>Цифровая криминалистика</p></div>
+<div class="card"><h3>Threat Intel</h3><p>Разведка угроз</p></div>
+<div class="card"><h3>Архитектура</h3><p>Проектирование защиты</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">184 · Модуль VII · Направления</div>
+<h2>SOC-аналитик</h2>
+<p class="lead">Первая линия обороны. Мониторит алерты, разбирается в них и эскалирует при необходимости.</p>
+<div class="grid g3">
+<div class="card"><h3>Tier 1</h3><p>Сортировка алертов по playbook. Работа по шаблону, много рутины.</p></div>
+<div class="card"><h3>Tier 2</h3><p>Глубокий анализ, корреляция событий, расследование инцидентов.</p></div>
+<div class="card"><h3>Tier 3</h3><p>Threat hunter, разработка детектов, сложные инциденты, наставничество.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">185 · Модуль VII · Направления</div>
+<h2>Threat Hunter</h2>
+<p class="lead">Охотник за угрозами. Не ждёт алерта, а сам ищет следы уже произошедшей компрометации.</p>
+<ul class="pts">
+<li>Гипотеза → данные → проверка → находка или вывод об отсутствии.</li>
+<li>Использует MITRE ATT&CK как карту для систематического поиска.</li>
+<li>Требует глубокого знания операционных систем, сети и инструментов атакующих.</li>
+<li>Работает на стыке красной и синей команды.</li>
+<li>Часто именно threat hunter находит то, что годами не замечали автоматические системы.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">186 · Модуль VII · Направления</div>
+<h2>Incident Responder</h2>
+<p class="lead">Пожарный кибербезопасности. Работает, когда уже горит.</p>
+<div class="grid g3">
+<div class="card"><h3>Задача</h3><p>Быстро локализовать, остановить распространение, вернуть работу систем.</p></div>
+<div class="card"><h3>Навыки</h3><p>Спокойствие, структура, знание инфраструктуры, коммуникация с руководством.</p></div>
+<div class="card"><h3>Стресс</h3><p>Один из самых напряжённых участков. Инциденты не спрашивают удобного времени.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">187 · Модуль VII · Направления</div>
+<h2>Digital Forensics</h2>
+<p class="lead">Цифровая криминалистика. Восстановление картины произошедшего по следам.</p>
+<ul class="pts">
+<li>Дисковая экспертиза: файловые системы, удалённые данные, артефакты ОС.</li>
+<li>Сетевая: анализ трафика, логов, корреляция событий по времени.</li>
+<li>Мобильная: извлечение данных из телефонов и планшетов.</li>
+<li>Memory forensics: анализ оперативной памяти — например, через Volatility.</li>
+<li>Правило: сохранить доказательства, не изменив их. Любое действие фиксируется в chain of custody.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">188 · Модуль VII · Направления</div>
+<h2>Malware Analyst и Reverse Engineer</h2>
+<p class="lead">Разбирает вредоносное ПО: как работает, что делает, куда звонит.</p>
+<div class="grid g3">
+<div class="card"><h3>Статический анализ</h3><p>Разбор бинарника без запуска: строки, импорты, дизассемблирование.</p></div>
+<div class="card"><h3>Динамический</h3><p>Запуск в изолированной песочнице с полным мониторингом.</p></div>
+<div class="card"><h3>Инструменты</h3><p>IDA Pro, Ghidra, x64dbg, Cuckoo, Any.run, PEStudio.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">189 · Модуль VII · Направления</div>
+<h2>Пентестер</h2>
+<p class="lead">Легальный взломщик. Ищет уязвимости, пока это не сделал кто-то другой.</p>
+<ul class="pts">
+<li>Этапы: разведка → сканирование → эксплуатация → закрепление → отчёт.</li>
+<li>Инструменты: Burp Suite, Metasploit, Nmap, sqlmap, BloodHound.</li>
+<li>Документирование не менее важно, чем взлом: заказчик должен понять и исправить.</li>
+<li>Сертификации: OSCP, OSEP, CRTP, OSWE, GPEN.</li>
+<li>Отличается от Red Team масштабом: пентест фокусируется на конкретных системах.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">190 · Модуль VII · Направления</div>
+<h2>Red Teamer</h2>
+<p class="lead">Имитация реального противника. Не просто «найти уязвимости», а проверить всю систему защиты.</p>
+<div class="grid g3">
+<div class="card"><h3>Отличие от пентеста</h3><p>Цель — не список уязвимостей, а проверка способности компании обнаружить и отреагировать.</p></div>
+<div class="card"><h3>Тактики</h3><p>Физическое проникновение, социальная инженерия, zero-day, собственные C2-инфраструктуры.</p></div>
+<div class="card"><h3>Длительность</h3><p>Месяцы. Работа без обнаружения — часть задачи.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">191 · Модуль VII · Направления</div>
+<h2>AppSec-инженер</h2>
+<p class="lead">Помогает разработчикам писать безопасный код — и делает так, чтобы это было удобно.</p>
+<ul class="pts">
+<li>Threat modeling на этапе проектирования.</li>
+<li>Внедрение SAST, DAST и SCA в CI/CD-пайплайн.</li>
+<li>Обучение разработчиков, код-ревью на безопасность.</li>
+<li>Разбор уязвимостей и помощь в их исправлении.</li>
+<li>Часто — security champion в продуктовой команде.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">192 · Модуль VII · Направления</div>
+<h2>Cloud Security</h2>
+<p class="lead">Безопасность в AWS, Azure, GCP. Самая быстрорастущая область последних лет.</p>
+<div class="grid g3">
+<div class="card"><h3>Основы</h3><p>IAM, security groups, шифрование, secrets, KMS, аудит.</p></div>
+<div class="card"><h3>Инструменты</h3><p>CSPM (Wiz, Prisma), CIEM, CWPP, облачные нативные детекторы.</p></div>
+<div class="card"><h3>Главный риск</h3><p>Misconfiguration. До 80 % утечек в облаке — из-за ошибок конфигурации, а не «взлома».</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">193 · Модуль VII · Направления</div>
+<h2>DevSecOps-инженер</h2>
+<p class="lead">На стыке разработки, безопасности и операций. Автоматизирует безопасность.</p>
+<ul class="pts">
+<li>Пишет политики как код (OPA, Checkov, tfsec).</li>
+<li>Настраивает безопасные пайплайны CI/CD.</li>
+<li>Управляет секретами и доступом в сборочной инфраструктуре.</li>
+<li>Консультирует команды по безопасным практикам.</li>
+<li>Обеспечивает безопасность контейнеров, оркестраторов, инфраструктуры как кода.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">194 · Модуль VII · Направления</div>
+<h2>Архитектор безопасности</h2>
+<p class="lead">Проектирует защиту на уровне всей системы. Думает на годы вперёд.</p>
+<div class="grid g3">
+<div class="card"><h3>Задача</h3><p>Создать архитектуру, где безопасность — свойство системы, а не надстройка.</p></div>
+<div class="card"><h3>Навыки</h3><p>Глубокое знание технологий плюс понимание бизнеса плюс коммуникация.</p></div>
+<div class="card"><h3>Уровень</h3><p>Обычно senior и выше. Путь занимает семь–десять лет.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">195 · Модуль VII · Направления</div>
+<h2>GRC и аудит</h2>
+<p class="lead">Governance, Risk, Compliance. Язык, на котором безопасность говорит с бизнесом и регуляторами.</p>
+<ul class="pts">
+<li>Разработка политик и регламентов.</li>
+<li>Оценка рисков и управление ими на уровне компании.</li>
+<li>Подготовка к аудитам: ISO 27001, PCI DSS, SOC 2, ГОСТ.</li>
+<li>Взаимодействие с регуляторами, клиентами и партнёрами.</li>
+<li>Часто именно GRC-специалисты объясняют совету директоров, почему стоит вложить деньги в безопасность.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">196 · Модуль VII · Направления</div>
+<h2>CISO</h2>
+<p class="lead">Chief Information Security Officer. Высший руководитель по безопасности.</p>
+<div class="grid g3">
+<div class="card"><h3>Ответственность</h3><p>Стратегия, бюджет, риск, культура, отношения с советом директоров.</p></div>
+<div class="card"><h3>Парадокс</h3><p>Если всё хорошо — вас не замечают. Если плохо — вы первый, кого зовут.</p></div>
+<div class="card"><h3>Средний срок</h3><p>Около двух–трёх лет. Выгорание и давление — реальная проблема профессии.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">197 · Модуль VII · Направления</div>
+<h2>Криптограф</h2>
+<p class="lead">Математик, который строит и ломает шифры. Одна из самых редких и сложных профессий.</p>
+<ul class="pts">
+<li>Требует глубокой математики: алгебра, теория чисел, теория сложности.</li>
+<li>Работает в академии, спецслужбах, крупных технологических компаниях.</li>
+<li>Сейчас — активная работа над постквантовыми алгоритмами.</li>
+<li>Ошибка в криптографии = катастрофа для миллионов пользователей.</li>
+<li>Профессию отличает долгий цикл обратной связи: результат виден через годы.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">198 · Модуль VII · Направления</div>
+<h2>IoT и OT безопасность</h2>
+<div class="split">
+<div><h3 class="acc">IoT</h3><p>Умные устройства: камеры, чайники, датчики. Проблемы: заводские пароли, нет обновлений, слабая криптография, огромный масштаб. Атаки типа Mirai — прямое следствие этой слабости.</p></div>
+<div><h3 class="acc">OT, ICS, SCADA</h3><p>Промышленные системы: заводы, электростанции, трубопроводы. Проблемы: legacy-ПО на двадцать лет, нельзя просто перезагрузить, цена ошибки — человеческие жизни.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">199 · Модуль VII · Направления</div>
+<h2>Безопасность ИИ и ML</h2>
+<div class="grid g3">
+<div class="card"><h3>Атаки на модели</h3><p>Adversarial examples, отравление обучающих данных, извлечение модели.</p></div>
+<div class="card"><h3>Prompt injection</h3><p>Манипуляция LLM через ввод. Новая и очень серьёзная угроза.</p></div>
+<div class="card"><h3>Защита с помощью ИИ</h3><p>Использование ML для детектирования аномалий и фишинга.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">200 · Модуль VII · Направления</div>
+<h2>OSINT и Threat Intelligence</h2>
+<p class="lead">Разведка на основе открытых источников и анализ угроз.</p>
+<ul class="pts">
+<li>Сбор данных: домены, IP, утёкшие учётные данные, форумы, даркнет.</li>
+<li>Атрибуция атак: связывание кампаний с конкретными группами и странами.</li>
+<li>Индикаторы компрометации (IOC) и их актуальность во времени.</li>
+<li>Платформы: MISP, OpenCTI, VirusTotal, Shodan, Censys.</li>
+<li>Цель — понимать противника и предупреждать атаку до её начала.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">201 · Модуль VII · Направления</div>
+<h2>Сертификации</h2>
+<div class="grid g4">
+<div class="card"><h3>CISSP</h3><p>Управленческий, широкий охват</p></div>
+<div class="card"><h3>OSCP</h3><p>Практический пентест, двадцатичетырёхчасовой экзамен</p></div>
+<div class="card"><h3>CEH</h3><p>Этичный хакер, теоретический</p></div>
+<div class="card"><h3>CISM</h3><p>Менеджмент информационной безопасности</p></div>
+<div class="card"><h3>CompTIA Security+</h3><p>Базовый вход в профессию</p></div>
+<div class="card"><h3>AWS Security</h3><p>Специализация на облаке</p></div>
+<div class="card"><h3>GIAC</h3><p>Семейство глубоких технических сертификатов</p></div>
+<div class="card"><h3>ФСТЭК</h3><p>Российские требования и аттестация</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">202 · Модуль VII · Направления</div>
+<h2>Путь входа в профессию</h2>
+<div class="grid g3">
+<div class="card"><h3>Фундамент</h3><p>Сети, Linux, Windows, скрипты (Python, Bash), основы криптографии, английский язык.</p></div>
+<div class="card"><h3>Практика</h3><p>TryHackMe, Hack The Box, OverTheWire, CTF, домашняя лаборатория, pet-проекты.</p></div>
+<div class="card"><h3>Первая работа</h3><p>SOC Tier 1, системный администратор, техподдержка ИБ, стажировка в продуктовой команде.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Через год–два можно двигаться вглубь: offensive, AppSec, cloud, forensics или GRC.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">203 · Модуль VII · Направления</div>
+<h2>Рынок и зарплаты</h2>
+<div class="grid g4">
+<div class="card"><div class="stat grad">3,5 млн</div><div class="stat-l">незакрытых вакансий в мире</div></div>
+<div class="card"><div class="stat grad">≈0 %</div><div class="stat-l">безработица среди квалифицированных специалистов</div></div>
+<div class="card"><div class="stat grad">$$$</div><div class="stat-l">одна из самых высокооплачиваемых ИТ-областей</div></div>
+<div class="card"><div class="stat grad">∞</div><div class="stat-l">потолок роста: от аналитика до CISO</div></div>
+</div>
+<p class="lead" style="margin-top:1.2rem">Главный дефицит — не «люди», а <b>квалифицированные</b> люди. Курсы есть у всех. Настоящая ценность — практический опыт.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">204 · Модуль VII · Направления</div>
+<h2>Направления: итоги</h2>
+<p class="bigquote">В кибербезопасности найдётся место и математику, и коммуникатору, и «пожарному», и стратегу.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ VIII ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">205 · Модуль VIII · Будущее</div>
+<h2>Тренды ближайших лет</h2>
+<div class="grid g3">
+<div class="card"><h3>ИИ везде</h3><p>И в атаках, и в защите. Гонка ускоряется.</p></div>
+<div class="card"><h3>Zero Trust</h3><p>Из концепции — в обязательный стандарт.</p></div>
+<div class="card"><h3>Постквантовый переход</h3><p>Начинается прямо сейчас.</p></div>
+<div class="card"><h3>Supply chain</h3><p>Атаки через вендоров и библиотеки.</p></div>
+<div class="card"><h3>Регулирование</h3><p>Государство всё активнее вмешивается.</p></div>
+<div class="card"><h3>Дефицит кадров</h3><p>Автоматизация — не роскошь, а необходимость.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">206 · Модуль VIII · Будущее</div>
+<h2>ИИ в атаках</h2>
+<ul class="pts">
+<li>Генерация идеального фишинга: без ошибок, на любом языке, под конкретного человека.</li>
+<li>Deepfake-голос руководителя для BEC-атак — уже реальность, а не прогноз.</li>
+<li>Автоматический поиск уязвимостей и генерация эксплойтов.</li>
+<li>Умные ботнеты, адаптирующиеся к защите в реальном времени.</li>
+<li>LLM как инструмент для масштабирования всех этапов атаки — от разведки до эксфильтрации.</li>
+<li>Отдельная проблема: отравление обучающих данных для моделей, используемых в защите.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">207 · Модуль VIII · Будущее</div>
+<h2>ИИ в защите</h2>
+<div class="grid g3">
+<div class="card"><h3>Детектирование</h3><p>Аномалии поведения пользователей и систем, невидимые для правил.</p></div>
+<div class="card"><h3>Автоматизация</h3><p>Триаж алертов, реагирование, анализ малвари, генерация отчётов.</p></div>
+<div class="card"><h3>Прогнозирование</h3><p>Предсказание целей атакующих и уязвимых мест до атаки.</p></div>
+</div>
+<p class="lead" style="margin-top:1rem">Проблемы ИИ-защиты: ложные срабатывания, непрозрачность решений, атаки на сами модели.</p>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">208 · Модуль VIII · Будущее</div>
+<h2>Deepfake и социальная инженерия</h2>
+<p class="lead">Технология, которая убивает главное правило «увидеть — значит поверить».</p>
+<div class="grid g3">
+<div class="card"><h3>Видео</h3><p>Подделка выступлений руководителей и публичных лиц.</p></div>
+<div class="card"><h3>Голос</h3><p>Звонок «от директора» с просьбой срочно перевести деньги. Уже случалось.</p></div>
+<div class="card"><h3>Защита</h3><p>Кодовые слова, подтверждение по второму каналу, детекторы deepfake.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">209 · Модуль VIII · Будущее</div>
+<h2>Квантовые вычисления</h2>
+<p class="lead">Горизонт, который уже виден. Вопрос не «если», а «когда».</p>
+<ul class="pts">
+<li>Алгоритм Шора ломает RSA и ECC полностью.</li>
+<li>Алгоритм Гровера ослабляет симметричную криптографию вдвое.</li>
+<li>Оценки: от пяти до двадцати лет до практической угрозы — но оценки расходятся.</li>
+<li>Стратегия «harvest now, decrypt later»: данные, украденные сегодня, расшифруют завтра.</li>
+<li>Уже сегодня банки и госструктуры начинают пилотные проекты по постквантовой миграции.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">210 · Модуль VIII · Будущее</div>
+<h2>Постквантовый переход</h2>
+<div class="grid g3">
+<div class="card"><h3>Что делать</h3><p>Инвентаризировать всю криптографию, понять, где используются RSA и ECC.</p></div>
+<div class="card"><h3>Гибридные схемы</h3><p>Комбинировать классические и постквантовые алгоритмы для плавного перехода.</p></div>
+<div class="card"><h3>Сроки</h3><p>NIST требует завершить переход к 2035 году. Для крупных систем это очень мало.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">211 · Модуль VIII · Будущее</div>
+<h2>IoT и умные города</h2>
+<ul class="pts">
+<li>Миллиарды устройств с минимальной защитой и долгим жизненным циклом.</li>
+<li>Умный транспорт, энергетика, водоснабжение — критическая инфраструктура.</li>
+<li>Проблемы: нет обновлений, дефолтные пароли, слабая криптография.</li>
+<li>Регулирование появляется: ETSI EN 303 645, закон о кибербезопасности IoT в ЕС.</li>
+<li>Каждое новое «умное» устройство в доме — потенциальная точка входа в сеть.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">212 · Модуль VIII · Будущее</div>
+<h2>OT, ICS и критическая инфраструктура</h2>
+<p class="lead">Атаки на промышленность — самый опасный класс инцидентов. Потому что последствия измеряются не деньгами, а жизнями.</p>
+<div class="grid g3">
+<div class="card"><h3>Stuxnet (2010)</h3><p>Первый кибер-червь, разрушивший физическое оборудование на иранском ядерном объекте.</p></div>
+<div class="card"><h3>Украина (2015–2016)</h3><p>Отключение электричества для сотен тысяч людей.</p></div>
+<div class="card"><h3>Colonial Pipeline (2021)</h3><p>Остановка топливоснабжения целого региона США.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">213 · Модуль VIII · Будущее</div>
+<h2>Космос и спутники</h2>
+<ul class="pts">
+<li>Спутниковая связь и GPS — часть критической инфраструктуры.</li>
+<li>Взлом терминалов VSAT уже приводил к сбоям связи в целом регионе.</li>
+<li>Оборудование на орбите трудно обновить — атака может длиться годами.</li>
+<li>Новая область: спутниковая кибербезопасность. Острая нехватка специалистов.</li>
+<li>Космические аппараты всё чаще становятся и целями, и инструментами геополитики.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">214 · Модуль VIII · Будущее</div>
+<h2>Автономный транспорт</h2>
+<div class="grid g3">
+<div class="card"><h3>Поверхность атаки</h3><p>Датчики, V2X-связь, OTA-обновления, CAN-шина, мобильное приложение.</p></div>
+<div class="card"><h3>Реальные атаки</h3><p>Угоны Tesla через API, взлом Jeep Cherokee исследователями в 2015 году.</p></div>
+<div class="card"><h3>Защита</h3><p>Сегментация сетей автомобиля, подписанные обновления, Secure Boot, детектирование аномалий.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">215 · Модуль VIII · Будущее</div>
+<h2>Биометрия и приватность</h2>
+<p class="lead">Ваше лицо и отпечаток пальца — это не пароль. Их нельзя сменить.</p>
+<ul class="pts">
+<li>Утечка биометрической базы — навсегда.</li>
+<li>Компрометация одной системы компрометирует вас во всех остальных.</li>
+<li>Необходимо: локальное хранение, шаблоны вместо сырых данных, оспоримость.</li>
+<li>Регулирование: GDPR, BIPA (Иллинойс), законы о биометрии в разных странах.</li>
+<li>Биометрия удобна, но должна быть дополнением, а не заменой других факторов.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">216 · Модуль VIII · Будущее</div>
+<h2>Регулирование будущего</h2>
+<div class="grid g3">
+<div class="card"><h3>Обязательный комплаенс</h3><p>Всё больше стран требуют соответствия стандартам информационной безопасности.</p></div>
+<div class="card"><h3>Уведомления об утечках</h3><p>Сроки сокращаются. Молчать — дороже, чем признаться.</p></div>
+<div class="card"><h3>Личная ответственность</h3><p>CISO и топ-менеджеры всё чаще несут личную ответственность за инциденты.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">217 · Модуль VIII · Будущее</div>
+<h2>Кибервойны и геополитика</h2>
+<ul class="pts">
+<li>Кибератаки стали инструментом государственной политики.</li>
+<li>NotPetya, SolarWinds, атаки на энергетику — примеры уровня «кибероружия».</li>
+<li>Проблема атрибуции: как доказать, кто именно атаковал?</li>
+<li>Правила ведения кибервойн пока не определены — аналога Женевской конвенции нет.</li>
+<li>Частные компании всё чаще оказываются на передовой: они первыми видят атаки и первыми реагируют.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">218 · Модуль VIII · Будущее</div>
+<h2>Киберстрахование</h2>
+<div class="grid g3">
+<div class="card"><h3>Идея</h3><p>Перенести финансовый риск кибератаки на страховщика.</p></div>
+<div class="card"><h3>Проблема</h3><p>Системные риски: одна атака затрагивает всех — страховщики не могут покрыть ущерб.</p></div>
+<div class="card"><h3>Тренд</h3><p>Страховщики требуют MFA, бэкапы, EDR как условие полиса. Это двигает безопасность вперёд.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">219 · Модуль VIII · Будущее</div>
+<h2>Цифровой суверенитет</h2>
+<p class="lead">Стремление государств контролировать данные и технологии на своей территории.</p>
+<ul class="pts">
+<li>Локализация данных: хранение на территории страны.</li>
+<li>Национальные операционные системы, процессоры, криптостандарты.</li>
+<li>Разделение интернета на «зоны» — риск фрагментации.</li>
+<li>Баланс между безопасностью и открытостью — ключевой вопрос эпохи.</li>
+<li>Отдельная тема — экспортный контроль криптографии и технологий.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">220 · Модуль VIII · Будущее</div>
+<h2>Что дальше</h2>
+<p class="bigquote">Мы переходим от защиты <span class="grad">периметра</span> к защите <span class="grad">каждого действия</span>. От защиты систем — к защите решений, принимаемых людьми и ИИ.</p>
+</div></section>
+
+<!-- ================= МОДУЛЬ IX ================= -->
+<section class="slide"><div class="s-inner">
+<div class="kicker">221 · Модуль IX · Эпилог</div>
+<h2>Десять правил личной безопасности</h2>
+<div class="grid g2">
+<div class="card"><p><b>1.</b> Уникальные пароли плюс менеджер паролей.</p><p><b>2.</b> MFA везде, где возможно. Лучше — аппаратный ключ.</p><p><b>3.</b> Обновляйте всё. Всё. Регулярно.</p><p><b>4.</b> Бэкапы: 3-2-1, проверенные.</p><p><b>5.</b> Не переходите по ссылкам из неожиданных сообщений.</p></div>
+<div class="card"><p><b>6.</b> Шифруйте диски и трафик.</p><p><b>7.</b> Минимизируйте то, что о себе публикуете.</p><p><b>8.</b> Не пользуйтесь открытым Wi-Fi без VPN.</p><p><b>9.</b> Проверяйте разрешения приложений.</p><p><b>10.</b> Думайте. Спешка — лучший друг атакующего.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">222 · Модуль IX · Эпилог</div>
+<h2>Чек-лист для компании</h2>
+<ul class="pts">
+<li>Инвентаризация активов — вы не защитите то, о чём не знаете.</li>
+<li>MFA на всё, что важно. Особенно на административный доступ.</li>
+<li>Управление уязвимостями и патчами — регулярно, а не от случая к случаю.</li>
+<li>EDR на всех конечных точках, SIEM для корреляции событий.</li>
+<li>Бэкапы, проверенные и изолированные от основной сети.</li>
+<li>Обучение сотрудников и регулярные симуляции фишинга.</li>
+<li>План реагирования, который реально тестировали, а не «написали и положили».</li>
+<li>Zero Trust как цель, а не лозунг.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">223 · Модуль IX · Эпилог</div>
+<h2>Мифы о кибербезопасности</h2>
+<div class="grid g3">
+<div class="card"><h3>«Меня не тронут»</h3><p>Автоматизированные атаки бьют по всем подряд. Размер компании не защищает.</p></div>
+<div class="card"><h3>«У нас Mac, мы в безопасности»</h3><p>Малварь под macOS существует и растёт. Плюс фишинг работает независимо от ОС.</p></div>
+<div class="card"><h3>«Антивирус решает всё»</h3><p>Антивирус — один слой. Атаки идут и вокруг него.</p></div>
+<div class="card"><h3>«Мы неинтересны хакерам»</h3><p>Интересны. Доступ к вашей сети — товар на рынке.</p></div>
+<div class="card"><h3>«Пароль сложный — всё в порядке»</h3><p>Фишинг и утечки обходят сложность.</p></div>
+<div class="card"><h3>«Мы платим за безопасность»</h3><p>Деньги не равны зрелости. Процессы важнее продуктов.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">224 · Модуль IX · Эпилог</div>
+<h2>Ресурсы для обучения</h2>
+<div class="grid g3">
+<div class="card"><h3>Практика</h3><p>TryHackMe, Hack The Box, PortSwigger Academy, OverTheWire, Standoff 365.</p></div>
+<div class="card"><h3>CTF</h3><p>picoCTF, CTFtime, Standoff, RuCTF, DEF CON Quals.</p></div>
+<div class="card"><h3>Курсы</h3><p>Coursera, Cybrary, SANS (дорого, но качественно), бесплатные лекции ведущих вузов.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">225 · Модуль IX · Эпилог</div>
+<h2>Книги</h2>
+<div class="grid g3">
+<div class="card"><h3>«Хакеры»</h3><p>Стивен Леви — история хакерской культуры от MIT до первых BBS.</p></div>
+<div class="card"><h3>«Криптономикон»</h3><p>Нил Стивенсон — художественная, но очень точная книга о криптографии и Второй мировой.</p></div>
+<div class="card"><h3>«Код»</h3><p>Чарльз Петцольд — как компьютеры устроены снизу вверх.</p></div>
+<div class="card"><h3>«The Web Application Hacker's Handbook»</h3><p>Классика по веб-уязвимостям и методикам тестирования.</p></div>
+<div class="card"><h3>«Serious Cryptography»</h3><p>Жан-Филипп Омассон — современная криптография без лишней математики.</p></div>
+<div class="card"><h3>«Искусство невидимости»</h3><p>Кевин Митник — о приватности и цифровой гигиене в современном мире.</p></div>
+</div>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">226 · Модуль IX · Эпилог</div>
+<h2>Сообщества и конференции</h2>
+<ul class="pts">
+<li>Конференции: DEF CON, Black Hat, RSA Conference, PHDays, Zero Nights.</li>
+<li>Локальные: OWASP-чаптеры в десятках городов мира.</li>
+<li>Meetups: Security Meetup, DC-группы в разных странах.</li>
+<li>Онлайн: r/netsec, X (Twitter) infosec-сообщество, специализированные Discord-серверы.</li>
+<li>Главное: общаться, делиться, учиться. В одиночку в этой профессии не получится.</li>
+</ul>
+</div></section>
+
+<section class="slide"><div class="s-inner">
+<div class="kicker">227 · Модуль IX · Эпилог</div>
+<h2>Главная мысль</h2>
+<p class="bigquote">Кибербезопасность — это не про <span class="grad">страх</span>. Это про <span class="grad">уважение</span> к сложности мира, в котором мы живём.</p>
+<p class="lead" style="margin-top:1.2rem">Мы построили цивилизацию на фундаменте, который невидим — на коде, протоколах, криптографии. И этот фундамент держится только потому, что кто-то каждый день его укрепляет. Теперь вы знаете, как это работает — и, возможно, захотите стать одним из них.</p>
+</div></section>
+
+<section class="slide title-slide"><div class="s-inner">
+<div class="kicker">228 · Финал</div>
+<h1>Спасибо за <span class="grad">внимание</span>.</h1>
+<p class="lead" style="margin-top:1.2rem">228 слайдов. Двадцать пять веков истории. Одно большое поле — и бесконечное пространство для изучения. Удачи на пути.</p>
+<div style="margin-top:1.2rem"><span class="tag">Думайте критически</span><span class="tag">Обновляйте всё</span><span class="tag">Используйте MFA</span><span class="tag">Делайте бэкапы</span></div>
+</div></section>
+
+</div>
+
+<div id="hud"><b id="cur">1</b> / <span id="total">228</span></div>
+
+<div id="nav">
+  <button id="mPrev" type="button" aria-label="Предыдущий слайд">← Назад</button>
+  <button id="mNext" type="button" aria-label="Следующий слайд">Вперёд →</button>
+  <div id="navProgress"><i id="navBar"></i></div>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total  = slides.length;
+  const curEl  = document.getElementById('cur');
+  const totEl  = document.getElementById('total');
+  const bar    = document.getElementById('bar');
+  const navBar = document.getElementById('navBar');
+  const mPrev  = document.getElementById('mPrev');
+  const mNext  = document.getElementById('mNext');
+  const deck   = document.getElementById('deck');
+  let i = 0;
+
+  totEl.textContent = total;
+
+  function go(n){
+    n = Math.max(0, Math.min(total-1, n));
+    if(n === i && slides[i].classList.contains('active')) return;
+    slides[i].classList.remove('active');
+    i = n;
+    slides[i].classList.add('active');
+    // Сброс скролла слайда наверх
+    const inner = slides[i].querySelector('.s-inner');
+    if(inner) inner.scrollTop = 0;
+    curEl.textContent = i+1;
+    const pct = ((i+1)/total*100)+'%';
+    bar.style.width = pct;
+    navBar.style.width = pct;
+    mPrev.disabled = (i <= 0);
+    mNext.disabled = (i >= total-1);
+    try{ history.replaceState(null,'','#'+(i+1)); }catch(e){}
+  }
+
+  // Тач-жесты: свайп влево/вправо
+  let touchStartX = 0, touchStartY = 0, touchStartT = 0, swiping = false;
+
+  function isScrollableTarget(el){
+    // Если пользователь начал жест внутри .s-inner — разрешаем скролл
+    while(el && el !== document.body){
+      if(el.classList && el.classList.contains('s-inner')) return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  document.addEventListener('touchstart', function(e){
+    if(e.touches.length !== 1) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    touchStartT = Date.now();
+    swiping = false;
+  }, {passive:true});
+
+  document.addEventListener('touchmove', function(e){
+    if(e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - touchStartX;
+    const dy = e.touches[0].clientY - touchStartY;
+    // Если горизонтальное движение явно больше вертикального — это свайп
+    if(Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)*1.4){
+      swiping = true;
+    }
+  }, {passive:true});
+
+  document.addEventListener('touchend', function(e){
+    if(e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dt = Date.now() - touchStartT;
+    // Быстрый горизонтальный свайп
+    if(dt < 700 && Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)*1.3){
+      if(dx < 0) go(i+1);
+      else go(i-1);
+    }
+    swiping = false;
+  }, {passive:true});
+
+  // Кнопки
+  mPrev.addEventListener('click', function(){ go(i-1); });
+  mNext.addEventListener('click', function(){ go(i+1); });
+
+  // Клавиатура (на случай подключения внешней)
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown'){ e.preventDefault(); go(i+1); }
+    else if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); go(i-1); }
+    else if(e.key === 'Home'){ e.preventDefault(); go(0); }
+    else if(e.key === 'End'){ e.preventDefault(); go(total-1); }
+  });
+
+  // Стартовый слайд
+  const start = parseInt(location.hash.replace('#',''), 10) || 1;
+  go(Math.max(0, Math.min(total-1, start-1)));
+
+  // Запрет двойного тапа для зума
+  let lastTap = 0;
+  document.addEventListener('touchend', function(e){
+    const now = Date.now();
+    if(now - lastTap < 300) e.preventDefault();
+    lastTap = now;
+  }, {passive:false});
+
+  // Запрет pull-to-refresh на iOS Safari (уже отключено через overscroll-behavior,
+  // но добавим для надёжности)
+  document.body.addEventListener('touchmove', function(e){
+    if(e.target === document.body) e.preventDefault();
+  }, {passive:false});
+})();
+</script>
+</body>
+</html>
